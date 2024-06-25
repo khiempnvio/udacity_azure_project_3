@@ -72,13 +72,11 @@ https://youtu.be/QAz9EHo82Wo
         }
     ```
 6. Run Terraform Commands
-    ```
-        ## Assuming you are in the terraform/environments/test/ directory
-        terraform init
-        ## Run "terraform init -upgrade" if you have changed the file contents/path
-        terraform plan
-        terraform apply
-    ```
+    > terraform init
+    > terraform plan
+    > terraform apply
+    > terraform destroy
+    
 #### 2. Set up an initial Pipeline
 
 ### II. Automated TestingDev Environment - Terraform
