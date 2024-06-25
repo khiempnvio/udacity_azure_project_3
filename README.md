@@ -73,10 +73,13 @@ https://youtu.be/QAz9EHo82Wo
     ```
 6. Run Terraform Commands
     > terraform init
+
     > terraform plan
+
     > terraform apply
-    > terraform destroy
     
+    > terraform destroy
+
 #### 2. Set up an initial Pipeline
 
 ### II. Automated TestingDev Environment - Terraform
