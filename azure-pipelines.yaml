@@ -33,9 +33,9 @@ stages:
   - job: BuildInfrastructure
     steps:
     - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.x'
-      addToPath: true
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
     - script: |
         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       displayName: 'Install Azure CLI'
@@ -47,7 +47,7 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
-          
+
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
     # Install Terraform on the pipeline agent 
