@@ -28,9 +28,7 @@ stages:
   - job: TerraformPlan
     displayName: 'Terraform Plan'
     steps:
-    - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: terraformInstaller@0
       inputs:
-        terraformVersion: 'latest'
-    - script: |
-        terraform --version
-      displayName: 'Terraform Init and Plan'
+        terraformVersion: '0.12.12'
+      displayName: Install Terraform
