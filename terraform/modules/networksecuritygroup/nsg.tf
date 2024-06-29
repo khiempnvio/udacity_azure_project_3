@@ -1,4 +1,4 @@
-resource "azurerm_network_security_group" "nsg" {
+resource "azurerm_network_security_group" "project_3" {
   name                = "${var.application_type}-${var.resource_type}"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
@@ -26,7 +26,7 @@ resource "azurerm_network_security_group" "nsg" {
         destination_address_prefix = "*"
     }
 }
-resource "azurerm_subnet_network_security_group_association" "test" {
+resource "azurerm_subnet_network_security_group_association" "project_3" {
     subnet_id                 = "${var.subnet_id}"
-    network_security_group_id = azurerm_network_security_group.nsg.id
+    network_security_group_id = azurerm_network_security_group.project_3.id
 }

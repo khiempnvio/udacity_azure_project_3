@@ -28,6 +28,8 @@ https://youtu.be/QAz9EHo82Wo
 #### 1. Dev Environment - Terraform
 1. Login to Azure
    > az login
+
+   ![Define prefix variable](/Images/az-login.png)
 2. Update Terraform Variables in terraform\environments\test\terraform.tfvars file
     ```
         subscription_id = "" #enter your subscription_id
@@ -59,7 +61,14 @@ https://youtu.be/QAz9EHo82Wo
 
     - Once your VM will be ready using the final pipeline, you will have to SSH log into the machine to run Selenium functional (UI) tests. For SSH into the VM, either have an "admin_username/admin_password" pair in the vm.tf file or use SSH key pair, as explained in the next point.
 
-5. Generate an SSH key pair
+5. Run configure-tfstate-storage-account.sh file to create a storage azure
+    ```
+        ## Run in your local terminal
+        ssh-keygen -t rsa
+        cat ~/.ssh/id_rsa.pub
+    ```
+   
+6. Generate an SSH key pair
     ```
         ## Run in your local terminal
         ssh-keygen -t rsa
@@ -71,7 +80,7 @@ https://youtu.be/QAz9EHo82Wo
         public_key = "" #enter your key
         }
     ```
-6. Run Terraform Commands
+7. Run Terraform Commands
     > terraform init
 
     > terraform plan
@@ -79,6 +88,7 @@ https://youtu.be/QAz9EHo82Wo
     > terraform apply
     
     > terraform destroy
+        It will delete all resource you already created
 
 #### 2. Set up an initial Pipeline
 
