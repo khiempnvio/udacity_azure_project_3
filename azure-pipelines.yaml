@@ -44,6 +44,10 @@ stages:
         inlineScript: |
           az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
 
+    - script: |
+        az account set --subscription $(subscription_id)
+      displayName: 'Set Azure Subscription'
+      
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
     # Install Terraform on the pipeline agent 
