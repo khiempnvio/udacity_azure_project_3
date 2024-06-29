@@ -91,7 +91,67 @@ https://youtu.be/QAz9EHo82Wo
         It will delete all resource you already created
 
 #### 2. Set up an initial Pipeline
+1. Login to dev.azure.com site
+2. Create a Project with public mode
+    ![Define prefix variable](/Images/az_dev_project.png)
+3. Create a Service connection
+    ![Define prefix variable](/Images/az_dev_service_connection.png)
+4. Create a Agent pool
+    ![Define prefix variable](/Images/az_dev_agent_pool.png)
+5. Create a Vitrual machine to connect agent pool
+    - go to azure portal and click create new vitrual machine
+    - Run the following commands from an Azure cloud shell or terminal or command prompt
+        1. login to vitrual machine
+            > ssh devopsagent@70.37.97.22
+        2. instal docker
+            > sudo snap install Docker
+        3. Configure the devopsagent user to run Docker.
+            ```
+                sudo groupadd docker
+                sudo usermod -aG docker $USER
+                exit
+            ```
+        Restart the Linux VM from Azure portal to apply changes made in previous steps. Restarting the VM will log you out from the SSH log in. 
 
+        4. Configure the Agent (VM) - Install Agent Services
+            - Go to agent on dev.azure.com and click new agent
+                ![Define prefix variable](/Images/az_dev_new_agent.png)
+            - Click on button copy and run bellow commands
+                ```
+                    curl -O curl -O https://vstsagentpackage.azureedge.net/agent/3.241.0/vsts-agent-linux-x64-3.241.0.tar.gz
+                    mkdir myagent && cd myagent
+                    tar zxvf ../vsts-agent-linux-x64-3.241.0.tar.gz
+                    ./config.sh
+                ```
+            - Run the following commands to finish the set up.
+                ```
+                    sudo ./svc.sh install
+                    sudo ./svc.sh start
+                ```
+        5. Prepare the Agent for running Flask application
+            - Run commands to install packages for vitrual machine
+                - Update latest packages
+                    ```
+                        sudo apt-get update
+                        sudo apt update
+                        sudo apt install software-properties-common
+                        sudo add-apt-repository ppa:deadsnakes/ppa
+                    ```
+                -  Install Python and Python PIP
+                    ```
+                        sudo apt install python3.9
+                        sudo apt-get install python3.9-venv
+                        sudo apt-get install python3-pip
+                        python3.9 --version
+                        pip --version 
+                    ```
+                - Install tools for the Pipeline build steps.
+                    ```
+                        sudo apt-get install python3.7-distutils
+                        sudo apt-get -y install zip
+                    ```
+        6. After you run all command above you can see green icon in Agent Pool
+6. 
 ### II. Automated TestingDev Environment - Terraform
 #### 1. Testing with JMeter
 #### 2. Testing with Postman
