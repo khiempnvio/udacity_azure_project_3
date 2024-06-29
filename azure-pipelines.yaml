@@ -42,12 +42,11 @@ stages:
 
     - task: AzureCLI@2
       inputs:
-        azureSubscription: 'YourAzureServiceConnection'
+        azureSubscription: '$(azureServiceConnectionId)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
           az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
