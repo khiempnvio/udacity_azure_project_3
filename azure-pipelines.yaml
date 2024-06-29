@@ -32,6 +32,14 @@ stages:
   jobs:
   - job: BuildInfrastructure
     steps:
+    
+    - script: |
+        sudo apt-get update
+        sudo apt-get install -y python3.9 python3.9-venv python3.9-dev
+        python3.9 -m venv myenv
+        source myenv/bin/activate
+      displayName: 'Install Python 3.9'
+
     - script: |
         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       displayName: 'Install Azure CLI'
@@ -47,7 +55,7 @@ stages:
     - script: |
         az account set --subscription $(subscription_id)
       displayName: 'Set Azure Subscription'
-      
+
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
     # Install Terraform on the pipeline agent 
