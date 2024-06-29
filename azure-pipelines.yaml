@@ -32,10 +32,6 @@ stages:
   jobs:
   - job: BuildInfrastructure
     steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.9'
-        addToPath: true
     - script: |
         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       displayName: 'Install Azure CLI'
