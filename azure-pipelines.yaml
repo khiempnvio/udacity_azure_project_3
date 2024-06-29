@@ -32,7 +32,6 @@ stages:
     # Install Terraform on the pipeline agent 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
       displayName: 'Terrafom installation'
-      uses: autero1/action-terraform@v3.0.1
       inputs:
         terraformVersion: '1.2.9'
     
