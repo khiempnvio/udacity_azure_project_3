@@ -19,6 +19,11 @@ variables:
   # Environment name
   environmentName: 'env-vm-project3'
 
+  ARM_CLIENT_ID: $(client_id)
+  ARM_CLIENT_SECRET: $(client_secret)
+  ARM_SUBSCRIPTION_ID: $(subscription_id)
+  ARM_TENANT_ID: $(tenant_id) 
+  
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
@@ -27,6 +32,22 @@ stages:
   jobs:
   - job: BuildInfrastructure
     steps:
+    - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      addToPath: true
+    - script: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      displayName: 'Install Azure CLI'
+
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'YourAzureServiceConnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
+          
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
     # Install Terraform on the pipeline agent 
