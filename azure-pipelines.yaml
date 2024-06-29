@@ -25,8 +25,11 @@ stages:
 #--------------------------------------------#    
 - stage: Build
   jobs:
+
   - job: BuildInfrastructure
     steps:
+    - name: Terraform installer
+    uses: autero1/action-terraform@v3.0.1
     #--------------------------------------------#  
     # Use Terraform to create the Infrastructure      
     # Install Terraform on the pipeline agent 
