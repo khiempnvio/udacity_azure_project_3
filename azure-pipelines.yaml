@@ -24,8 +24,8 @@ stages:
 #--------------------------------------------#    
 - stage: Build
   jobs:
-  - job: BuildInfrastructure
-    steps:
+  # - job: BuildInfrastructure
+  #   steps:
     # - script: |
     #     sed -i 's/CLIENT_SECRET_KEY/$(client_secret)/g' $(System.DefaultWorkingDirectory)/terraform/environments/test/terraform.tfvars
     #     cat $(System.DefaultWorkingDirectory)/terraform/environments/test/terraform.tfvars
