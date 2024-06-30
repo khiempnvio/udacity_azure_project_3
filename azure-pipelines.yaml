@@ -132,7 +132,7 @@ stages:
           inputs:
             versionSpec: '16.x'
             workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-        - script: |
+        - bash: |
             sudo npm install -g newman
             ls
           displayName: 'install -g newman'
