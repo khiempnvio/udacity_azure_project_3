@@ -150,17 +150,32 @@ stages:
 
  #--------------------------------------------#
     # Selenium (UI) Test Suite - Archive the package  
-    - job: Selenium_Test_Suite  
+    # - job: Archive_Selenium_Test_Suite 
+    #   steps: 
+    #     - task: ArchiveFiles@2
+    #       displayName: 'Archive UI Tests'
+    #       inputs:
+    #           rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+    #           includeRootFolder: false
+    #           archiveType: 'zip'
+    #           archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+    #     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+    #       displayName: 'Upload Package'
+    #       artifact: drop-uitests
+  #--------------------------------------------#    
+    # FakeRestAPI - Archive
+    - job: Archive_FakeRestAPI
       steps: 
         - task: ArchiveFiles@2
-          displayName: 'Archive UI Tests'
+          displayName: 'Archive FakeRestAPI'
           inputs:
-              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-              includeRootFolder: false
-              archiveType: 'zip'
-              archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
-        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+            rootFolderOrFile: 
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
           displayName: 'Upload Package'
-          artifact: drop-uitests
+          artifact: drop-fakerestapi
+    
 
        
