@@ -17,13 +17,13 @@ resource "azurerm_linux_virtual_machine" "project_3" {
   resource_group_name = "${var.resource_group}"
   size                = "Standard_DS2_v2"
   admin_username      = "devopsagent"
-  /*admin_password      = "DevOpsAgent@123"*/
-  disable_password_authentication = true
+  admin_password      = "DevOpsAgent@123"
+  disable_password_authentication = false
   
-  admin_ssh_key {
+  /*admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/authorized_keys/id_rsa.pub")
-  }
+    public_key = file("~/.ssh/id_rsa.pub")
+  }*/
 
   network_interface_ids = [azurerm_network_interface.project_3.id]
   os_disk {

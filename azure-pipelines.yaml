@@ -17,6 +17,9 @@ variables:
   # Environment name
   environmentName: 'env-vm-project3'
   appName: 'khiempn-udacity-1'
+  vmUsername: 'devopsagent'
+  vmPassword: 'DevOpsAgent@123'
+  vmIpAddress: 'DevOpsAgent@123'
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
@@ -82,11 +85,11 @@ stages:
     # Generate an SSH key pair in your local/AZ Cloud shell. Use the public key in the Terraform VM module. 
     # Install public key and private key file to the pipeline agent, using the task below. 
     # ToDo: Change the inputs value below
-    - task: InstallSSHKey@0
-      inputs:
-        knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN' # variable value
-        sshPublicKey: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN'            # variable value
-        sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
+    # - task: InstallSSHKey@0
+    #   inputs:
+    #     knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN' # variable value
+    #     sshPublicKey: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN'            # variable value
+    #     sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
     
     # - task: DownloadSecureFile@1
     #  name: udacity_public_key
@@ -103,6 +106,25 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
+    - script: |
+        terraform output -json > output.json
+      displayName: 'Capture Terraform Outputs'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(System.DefaultWorkingDirectory)/output.json'
+        artifact: 'terraformOutput'
+      displayName: 'Publish Terraform Output'
+
+    - download: current
+      artifact: terraformOutput
+
+    - script: |
+        export VM_USERNAME=$(jq -r '.admin_username.value' output.json)
+        export VM_PASSWORD=$(jq -r '.admin_password.value' output.json)
+        export VM_IP_ADDRESS=$(jq -r '.public_ip_address.value' output.json)
+        sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$VM_IP_ADDRESS "sudo apt-get update"
+      displayName: 'Log into VM and Run apt-get update'
 
     - script: |
         python -m venv appenv
