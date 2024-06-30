@@ -66,7 +66,7 @@ stages:
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'tfstate79912940'
         backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'test.terraform.tfstate'
+        backendAzureRmKey: 'key1'
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
 
