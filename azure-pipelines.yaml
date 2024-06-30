@@ -129,8 +129,9 @@ stages:
       steps: 
         
         - script: |
-            ls 
-            cat automatedtesting/postman/StarterAPIs.json
+            ls
+            cd automatedtesting
+            ls
           displayName: 'Run Postman StarterAPIs'
 
        
