@@ -23,7 +23,7 @@ variables:
   ARM_CLIENT_SECRET: $(client_secret)
   ARM_SUBSCRIPTION_ID: $(subscription_id)
   ARM_TENANT_ID: $(tenant_id) 
-  
+  storageAccessKey: '$(storage_access_key)'
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
