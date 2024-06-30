@@ -138,7 +138,7 @@ stages:
         displayName: 'Install Newman'
 
       - script: |
-          newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-StarterAPIs.xml
+          newman run $(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-StarterAPIs.xml
         displayName: 'Run StarterAPIs'
 
       # Postman - Publish Results 
