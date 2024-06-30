@@ -67,6 +67,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
+        commandOptions: '-var=storage_access_key=$(storage_access_key)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         backendServiceArm: '$(azureServiceConnectionId)'
         backendAzureRmResourceGroupName: 'Azuredevops'
