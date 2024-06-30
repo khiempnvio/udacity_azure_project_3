@@ -127,7 +127,7 @@ stages:
     # ToDo: Update the command and verify the working directory
     - job: Postman_Install_Newman  
       steps: 
-        - task: UseNode@1
+        - task: NodeTool@0
           displayName: 'Install Node.js'
           inputs:
             versionSpec: '16.x'
