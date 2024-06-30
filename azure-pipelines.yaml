@@ -18,12 +18,6 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
   environmentName: 'env-vm-project3'
-
-  ARM_CLIENT_ID: $(client_id)
-  ARM_CLIENT_SECRET: $(client_secret)
-  ARM_SUBSCRIPTION_ID: $(subscription_id)
-  ARM_TENANT_ID: $(tenant_id)
-  ARM_ACCESS_KEY: $(storage_access_key) 
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
@@ -74,7 +68,7 @@ stages:
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
       env:
-        ARM_ACCESS_KEY: $(ARM_ACCESS_KEY)
+        ARM_ACCESS_KEY: $(storage_access_key)
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: Terraform validate
@@ -105,7 +99,6 @@ stages:
     #  displayName: 
     #  inputs:
     #   secureFile: 
-
     
     # Run Terraform Apply
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
@@ -118,13 +111,13 @@ stages:
 
     # ToDo: Change the workingDirectory path, as applicable to you
     # Destroy the resources in Azure by running a separate pipeline. 
-    # - task: TerraformTaskV3@3
-    #   displayName: Terraform destroy
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'destroy'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    - task: TerraformTaskV3@3
+      displayName: Terraform destroy
+      inputs:
+        provider: 'azurerm'
+        command: 'destroy'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
 #--------------------------------------------#    
     # Postman - Install Newman    
