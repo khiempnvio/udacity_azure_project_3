@@ -131,21 +131,8 @@ stages:
           displayName: Install Node v16.X
           inputs:
             versionSpec: '16.x'
-        - bash: |
-            node -v
-            sudo npm install -g newman
-            newman -v
-          displayName: Install Newman CLI
-        - bash: |
-              newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
-          displayName: Run Regression Test
-        - task: CmdLine@2
-          inputs:
-            script: 'ls'
-            workingDirectory: '$(System.DefaultWorkingDirectory)'
-        - task: PublishTestResults@2
-          displayName: Publish report postman
-          condition: always()
-          inputs:
-            testResultsFormat: JUnit
-            testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+            script: 'sudo npm install -g newman
+            newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml
+            '
+            workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+       
