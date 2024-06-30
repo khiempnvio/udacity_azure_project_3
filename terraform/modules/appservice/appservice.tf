@@ -7,7 +7,7 @@ resource "azurerm_service_plan" "project_3" {
 }
 
 resource "azurerm_linux_web_app" "project_3" {
-  name                = "${var.application_type}-${var.resource_type}-wa"
+  name                = "khiempn-udacity-1"
   location            = "${var.location}"
   resource_group_name = "${var.resource_group}"
   service_plan_id     = azurerm_service_plan.project_3.id
