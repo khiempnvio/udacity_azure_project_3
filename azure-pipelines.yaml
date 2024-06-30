@@ -18,6 +18,7 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
   environmentName: 'env-vm-project3'
+  appName: 'khiempn-udacity-1'
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
@@ -192,5 +193,28 @@ stages:
           displayName: 'Upload Package'
           artifact: drop-perftests
     
-
+#--------------------------------------------#  
+# DEPLOYMENT STAGE
+#--------------------------------------------#    
+- stage: Deploy
+  jobs:
+  #--------------------------------------------#  
+  # Deploy FakeRestAPI Web App
+  # ToDo: Provide <environment name> you created in your DevOps project
+  - deployment: FakeRestAPI
+    pool:
+      vmImage: 'Ubuntu-18.04'      
+    environment: '$(environmentName)'   # ToDo
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: '$(azureServiceConnectionId)'
+              appName: '$(appName)'              # ToDo
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip       # ToDo: Use the published zip artifact. 
+              
        
