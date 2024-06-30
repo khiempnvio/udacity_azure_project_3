@@ -131,8 +131,10 @@ stages:
           displayName: Install Node v16.X
           inputs:
             versionSpec: '16.x'
-            script: 'sudo npm install -g newman
-            newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-DataValidation.xml
-            '
             workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        - script: |
+            sudo npm install -g newman
+            ls
+          displayName: 'install -g newman'
+
        
