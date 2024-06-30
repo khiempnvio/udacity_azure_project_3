@@ -138,11 +138,12 @@ stages:
         - script: |
             newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
           displayName: 'Run Postman StarterAPIs'
+
         - task: PublishTestResults@2
-            displayName: Publish report postman
-            condition: always()
-            inputs:
-             testResultsFormat: JUnit
-             testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+          displayName: Publish report postman
+          condition: always()
+          inputs:
+            testResultsFormat: JUnit
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
 
        
