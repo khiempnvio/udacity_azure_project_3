@@ -125,28 +125,26 @@ stages:
 #--------------------------------------------#    
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
-    - task: NodeTool@0
-      displayName: Install Node v16.X
-      inputs:
-        versionSpec: '16.x'
+  - job: Postman - Install Newman
+    steps:
+      - task: UseNode@1
+        displayName: 'Install Node.js'
+        inputs:
+          versionSpec: '14.x'
+          checkLatest: true
 
-    - task: CmdLine@2
-      displayName: Install Newman
-      inputs:
-        script: 'sudo npm install -g newman'
-        workingDirectory: $(System.DefaultWorkingDirectory)
-    # Postman Regression Test Suite    
-    # ToDo: Verify the working directory
-    - task: CmdLine@2
-      displayName: Run Regression Tests
-      continueOnError: true
-      inputs:
-        script: 'newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-StarterAPIs.xml'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-    # Postman - Publish Results 
-    # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-*.xml'
-        mergeTestResults: true
+      - script: |
+          npm install -g newman
+        displayName: 'Install Newman'
+
+      - script: |
+          newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-StarterAPIs.xml
+        displayName: 'Run StarterAPIs'
+
+      # Postman - Publish Results 
+      # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
+      - task: PublishTestResults@2
+        displayName: 'Publish Results StarterAPIs'
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/TEST-*.xml'
