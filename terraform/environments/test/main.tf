@@ -10,7 +10,7 @@ terraform {
     storage_account_name = "tfstate101034353"
     container_name       = "tfstate"
     key                  = "test.terraform.tfstate"
-    access_key           = var.storage_access_key
+    access_key           = "${var.client_secret}"
   }
 }
 

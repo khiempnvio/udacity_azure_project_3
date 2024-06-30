@@ -3,6 +3,7 @@ variable "subscription_id" {}
 variable "client_id" {}
 variable "client_secret" {}
 variable "tenant_id" {}
+variable "access_key" {}
 
 # Resource Group/Location
 variable "location" {}
@@ -13,6 +14,3 @@ variable "application_type" {}
 variable virtual_network_name {}
 variable address_prefix_test {}
 variable address_space  {}
-
-
-variable storage_access_key {}
