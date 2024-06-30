@@ -50,17 +50,12 @@ stages:
         inlineScript: |
           az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
 
-    #--------------------------------------------#  
-    # Use Terraform to create the Infrastructure      
-    # Install Terraform on the pipeline agent 
-    - task: TerraformInstaller@0
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
       displayName: 'Terrafom installation'
       inputs:
         terraformVersion: 'latest'
-    
-    # Run Terraform Init on the pipeline agent 
-    # ToDo: Replace the resource group name, storage account name, and container name below
-    - task: TerraformTaskV2@2
+  
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: 'Terrafom init'
       inputs:
         provider: 'azurerm'
@@ -74,7 +69,7 @@ stages:
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
 
-    - task: TerraformTaskV2@2
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: Terraform validate
       inputs:
         provider: 'azurerm'
@@ -82,8 +77,8 @@ stages:
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
 
-    - task: TerraformTaskV2@2
-      displayName: Terraform Plan
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: Terraform plan
       inputs:
         provider: 'azurerm'
         command: 'plan'
@@ -91,7 +86,6 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
-
     # OPTIONAL - This step is needed only if your Terraform VM uses an SSH key pair for login and you want your pipeline agent to connect to it. 
     # Generate an SSH key pair in your local/AZ Cloud shell. Use the public key in the Terraform VM module. 
     # Install public key and private key file to the pipeline agent, using the task below. 
@@ -108,8 +102,7 @@ stages:
     #  inputs:
     #   secureFile: 
     
-    # Run Terraform Apply
-    - task: TerraformTaskV2@2
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
@@ -119,9 +112,7 @@ stages:
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
 
-    # ToDo: Change the workingDirectory path, as applicable to you
-    # Destroy the resources in Azure by running a separate pipeline. 
-    - task: TerraformTaskV2@2
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: Terraform destroy
       inputs:
         provider: 'azurerm'
@@ -130,3 +121,27 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
+
+#--------------------------------------------#    
+    # Postman - Install Newman    
+    # ToDo: Update the command and verify the working directory
+    - task: CmdLine@2
+      displayName: Install Newman
+      inputs:
+        script: 'sudo npm install -g newman'
+        workingDirectory: $(System.DefaultWorkingDirectory)
+    # Postman Regression Test Suite    
+    # ToDo: Verify the working directory
+    - task: CmdLine@2
+      displayName: Run Regression Tests
+      continueOnError: true
+      inputs:
+        script: 'newman run StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-StarterAPIs.xml'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+    # Postman - Publish Results 
+    # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
+        mergeTestResults: true
