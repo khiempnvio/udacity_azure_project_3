@@ -163,33 +163,33 @@ stages:
     #       artifact: drop-uitests
   #--------------------------------------------#    
     # FakeRestAPI - Archive
-    - job: Archive_FakeRestAPI
-      steps: 
-        - task: ArchiveFiles@2
-          displayName: 'Archive FakeRestAPI'
-          inputs:
-            rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi/bin'
-            includeRootFolder: false
-            archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-          displayName: 'Upload Package'
-          artifact: drop-fakerestapi
+  - job: Archive_FakeRestAPI
+    steps: 
+      - task: ArchiveFiles@2
+        displayName: 'Archive FakeRestAPI'
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi/bin'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+      - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+        displayName: 'Upload Package'
+        artifact: drop-fakerestapi
   #--------------------------------------------#    
     # JMeter (Performance) Test Suite - Archive
-    - job: Archive_JMeter
-      steps: 
-        - task: ArchiveFiles@2
-          displayName: 'Archive PerformanceTestSuite'
-          inputs:
-            rootFolderOrFile: 
-            includeRootFolder: false
-            archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
-        # JMeter Test Suite - Publish    
-        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
-          displayName: 'Upload Package'
-          artifact: drop-perftests
+  - job: Archive_JMeter
+    steps: 
+      - task: ArchiveFiles@2
+        displayName: 'Archive PerformanceTestSuite'
+        inputs:
+          rootFolderOrFile: 
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+      # JMeter Test Suite - Publish    
+      - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
+        displayName: 'Upload Package'
+        artifact: drop-perftests
     
 #--------------------------------------------#  
 # DEPLOYMENT STAGE
@@ -212,5 +212,3 @@ stages:
               appName: '$(appName)'              # ToDo
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip 
-              
-       
