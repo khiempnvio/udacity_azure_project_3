@@ -22,7 +22,7 @@ resource "azurerm_linux_virtual_machine" "project_3" {
   
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = file("~/.ssh/authorized_keys/id_rsa.pub")
   }
 
   network_interface_ids = [azurerm_network_interface.project_3.id]
