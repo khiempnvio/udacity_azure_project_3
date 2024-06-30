@@ -130,10 +130,7 @@ stages:
         
         - script: |
             ls 
-            cd automatedtesting
-            ls
-            
-            //cat $(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json
+            cat automatedtesting/postman/StarterAPIs.json
           displayName: 'Run Postman StarterAPIs'
 
        
