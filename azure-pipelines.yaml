@@ -127,11 +127,22 @@ stages:
     # ToDo: Update the command and verify the working directory
     - job: Postman_Install_Newman  
       steps: 
-        
+        - task: NodeTool@0
+          displayName: 'Install Node.js'
+          inputs:
+            versionSpec: '16.x'
+            checkLatest: true
         - script: |
-            ls
-            cd automatedtesting
-            ls
+            npm install -g newman
+          displayName: 'Install Newman'
+        - script: |
+            newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
           displayName: 'Run Postman StarterAPIs'
+        - task: PublishTestResults@2
+            displayName: Publish report postman
+            condition: always()
+            inputs:
+             testResultsFormat: JUnit
+             testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
 
        
