@@ -126,9 +126,6 @@ stages:
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
     - job: Test_Post_man
-      displayName: Postman Test
-      pool:
-        name: Azure Pipelines
       steps: 
         - task: NodeTool@0
           displayName: Install Node v16.X
