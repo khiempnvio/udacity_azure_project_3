@@ -80,16 +80,6 @@ stages:
         provider: 'azurerm'
         command: 'validate'
 
-    - script: |
-        cat > $(System.DefaultWorkingDirectory)/terraform/environments/$(environment)/terraform.tfvars << EOF
-        resource_group_name = "$(resource_group_name)"
-        location            = "$(location)"
-        storage_account_name = "$(terraformBackendStorageAccount)"
-        container_name       = "$(terraformBackendContainerName)"
-        key                  = "$(terraformBackendKey)"
-        EOF
-      displayName: 'Create terraform.tfvars'
-
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: Terraform Plan
       inputs:
