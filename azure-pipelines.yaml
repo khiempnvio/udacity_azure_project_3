@@ -125,26 +125,30 @@ stages:
 #--------------------------------------------#    
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
-  - job: Postman_Install_Newman
-    steps:
-      - task: NodeTool@0
-        displayName: 'Install Node.js'
-        inputs:
-          versionSpec: '16.x'
-          checkLatest: true
-
-      - script: |
-          npm install -g newman
-        displayName: 'Install Newman'
-
-      - script: |
-          newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export TEST-StarterAPIs.xml
-        displayName: 'Run StarterAPIs'
-
-      # Postman - Publish Results 
-      # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
-      - task: PublishTestResults@2
-        displayName: 'Publish Results StarterAPIs'
-        inputs:
-          testResultsFormat: 'JUnit'
-          testResultsFiles: '**/TEST-*.xml'
+  - job: Test_Post_man
+      displayName: Postman Test
+      pool:
+        name: Azure Pipelines
+      steps: 
+        - task: NodeTool@0
+          displayName: Install Node v16.X
+          inputs:
+            versionSpec: '16.x'
+        - bash: |
+            node -v
+            sudo npm install -g newman
+            newman -v
+          displayName: Install Newman CLI
+        - bash: |
+              newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
+          displayName: Run Regression Test
+        - task: CmdLine@2
+          inputs:
+            script: 'ls'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+        - task: PublishTestResults@2
+          displayName: Publish report postman
+          condition: always()
+          inputs:
+            testResultsFormat: JUnit
+            testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
