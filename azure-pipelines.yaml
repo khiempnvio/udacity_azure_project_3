@@ -42,51 +42,51 @@ stages:
         inlineScript: |
           az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
 
-    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-    #   displayName: 'Terrafom installation'
-    #   inputs:
-    #     terraformVersion: 'latest'
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: 'Terrafom installation'
+      inputs:
+        terraformVersion: 'latest'
   
-    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-    #   displayName: 'Terrafom init'
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'init'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     backendServiceArm: '$(azureServiceConnectionId)'
-    #     backendAzureRmResourceGroupName: 'Azuredevops'
-    #     backendAzureRmStorageAccountName: 'tfstate101034353'
-    #     backendAzureRmContainerName: 'tfstate'
-    #     backendAzureRmKey: 'key1'
-    #   env:
-    #     ARM_ACCESS_KEY: $(storage_access_key)
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: 'Terrafom init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: '$(azureServiceConnectionId)'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'tfstate101034353'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'key1'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
 
-    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-    #   displayName: Terraform validate
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'validate'
-    #   env:
-    #     ARM_ACCESS_KEY: $(storage_access_key)
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: Terraform validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
 
-    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-      # displayName: Terraform plan
-      # inputs:
-      #   provider: 'azurerm'
-      #   command: 'plan'
-      #   workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-      #   environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-      # env:
-      #   ARM_ACCESS_KEY: $(storage_access_key)
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: Terraform plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
     # OPTIONAL - This step is needed only if your Terraform VM uses an SSH key pair for login and you want your pipeline agent to connect to it. 
     # Generate an SSH key pair in your local/AZ Cloud shell. Use the public key in the Terraform VM module. 
     # Install public key and private key file to the pipeline agent, using the task below. 
     # ToDo: Change the inputs value below
-    # - task: InstallSSHKey@0
-    #   inputs:
-    #     knownHostsEntry: 'KNOWN_HOSTS_STRING' # variable value
-    #     sshPublicKey: 'PUBLIC_KEY'            # variable value
-    #     sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN' # variable value
+        sshPublicKey: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN'            # variable value
+        sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
     
     # - task: DownloadSecureFile@1
     #  name: udacity_public_key
@@ -94,15 +94,15 @@ stages:
     #  inputs:
     #   secureFile: 
     
-    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-    #   displayName: Terraform apply
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'apply'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-    #   env:
-    #     ARM_ACCESS_KEY: $(storage_access_key)
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
 
     - script: |
         python -m venv appenv
