@@ -176,6 +176,21 @@ stages:
         - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
           displayName: 'Upload Package'
           artifact: drop-fakerestapi
+  #--------------------------------------------#    
+    # JMeter (Performance) Test Suite - Archive
+    - job: Archive_JMeter
+      steps: 
+        - task: ArchiveFiles@2
+          displayName: 'Archive PerformanceTestSuite'
+          inputs:
+            rootFolderOrFile: 
+            includeRootFolder: false
+            archiveType: 'zip'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+        # JMeter Test Suite - Publish    
+        - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
+          displayName: 'Upload Package'
+          artifact: drop-perftests
     
 
        
