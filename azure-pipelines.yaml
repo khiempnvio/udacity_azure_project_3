@@ -154,7 +154,7 @@ stages:
       steps: 
         - task: ArchiveFiles@2
           displayName: 'Archive UI Tests'
-           inputs:
+          inputs:
               rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
               includeRootFolder: false
               archiveType: 'zip'
