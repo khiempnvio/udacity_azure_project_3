@@ -125,15 +125,18 @@ stages:
 #--------------------------------------------#    
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
-    - job: Test_Post_man
+    - job: Postman_Install_Newman  
       steps: 
         - task: UseNode@1
           displayName: 'Install Node.js'
           inputs:
-            versionSpec: '14.x'
+            versionSpec: '16.x'
             checkLatest: true
         - script: |
             npm install -g newman
           displayName: 'Install Newman'
+        - script: |
+            newman run $(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json
+          displayName: 'Run Postman StarterAPIs'
 
        
