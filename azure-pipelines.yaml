@@ -42,34 +42,34 @@ stages:
         inlineScript: |
           az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
 
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-      displayName: 'Terrafom installation'
-      inputs:
-        terraformVersion: 'latest'
+    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+    #   displayName: 'Terrafom installation'
+    #   inputs:
+    #     terraformVersion: 'latest'
   
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-      displayName: 'Terrafom init'
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        backendServiceArm: '$(azureServiceConnectionId)'
-        backendAzureRmResourceGroupName: 'Azuredevops'
-        backendAzureRmStorageAccountName: 'tfstate101034353'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: 'key1'
-      env:
-        ARM_ACCESS_KEY: $(storage_access_key)
+    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+    #   displayName: 'Terrafom init'
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'init'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     backendServiceArm: '$(azureServiceConnectionId)'
+    #     backendAzureRmResourceGroupName: 'Azuredevops'
+    #     backendAzureRmStorageAccountName: 'tfstate101034353'
+    #     backendAzureRmContainerName: 'tfstate'
+    #     backendAzureRmKey: 'key1'
+    #   env:
+    #     ARM_ACCESS_KEY: $(storage_access_key)
 
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-      displayName: Terraform validate
-      inputs:
-        provider: 'azurerm'
-        command: 'validate'
-      env:
-        ARM_ACCESS_KEY: $(storage_access_key)
+    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+    #   displayName: Terraform validate
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'validate'
+    #   env:
+    #     ARM_ACCESS_KEY: $(storage_access_key)
 
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: Terraform plan
       inputs:
         provider: 'azurerm'
@@ -94,15 +94,15 @@ stages:
     #  inputs:
     #   secureFile: 
     
-    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-      displayName: Terraform apply
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-      env:
-        ARM_ACCESS_KEY: $(storage_access_key)
+    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+    #   displayName: Terraform apply
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'apply'
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+    #   env:
+    #     ARM_ACCESS_KEY: $(storage_access_key)
 
     - script: |
         python -m venv appenv
@@ -111,6 +111,8 @@ stages:
         sudo apt-get -y install make
         sudo apt-get -y install zip
         sudo apt-get -y install python3-pip
+
+        cd fakerestapi
         make install
       workingDirectory: $(projectRoot)
       displayName: 'Step install dependences'
