@@ -22,8 +22,8 @@ variables:
   ARM_CLIENT_ID: $(client_id)
   ARM_CLIENT_SECRET: $(client_secret)
   ARM_SUBSCRIPTION_ID: $(subscription_id)
-  ARM_TENANT_ID: $(tenant_id) 
-  storageAccessKey: '$(storage_access_key)'
+  ARM_TENANT_ID: $(tenant_id)
+  ARM_ACCESS_KEY: $(storage_access_key) 
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
@@ -67,13 +67,14 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        commandOptions: '-var=storage_access_key=$(storage_access_key)'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         backendServiceArm: '$(azureServiceConnectionId)'
         backendAzureRmResourceGroupName: 'Azuredevops'
         backendAzureRmStorageAccountName: 'tfstate79912940'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
+        env:
+          ARM_ACCESS_KEY: $(ARM_ACCESS_KEY)
 
     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
       displayName: Terraform validate
