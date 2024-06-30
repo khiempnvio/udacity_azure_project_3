@@ -1,5 +1,5 @@
 output "admin_username" {
-  value = azurerm_linux_virtual_machine.example.admin_username
+  value = azurerm_linux_virtual_machine.project_3.admin_username
 }
 
 output "admin_password" {
