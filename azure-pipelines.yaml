@@ -108,7 +108,6 @@ stages:
         ARM_ACCESS_KEY: $(storage_access_key)
 
 - stage: Build
-  displayName: Build And Archive
   jobs:
   - job: Build
     steps:
