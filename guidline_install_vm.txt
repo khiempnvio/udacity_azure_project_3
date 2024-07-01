@@ -1,0 +1,82 @@
+Configure the Agent (VM) - Install Docker
+Configure the newly created Linux VM as a self-hosted agent(opens in a new tab). The agent VM will perform the pipeline jobs, such as building your code residing in Github and deploying it to the Azure services. This step will let you authenticate the agent via a Personal Access Token (PAT) generated from your DevOps account. If everything goes well, you will see the agent "online" in your DevOps account, as shown in the snapshot below.
+
+Run the following commands from an Azure cloud shell or terminal or command prompt. Replace the IP address as applicable to you.
+
+ssh devopsagent@70.37.97.22
+Accept the default prompts and provide the username and password as you have set up in the last step above.
+
+After you SSH into the VM, install Docker(opens in a new tab) as:
+
+sudo snap install docker
+Check Python version because this agent will build your code.
+
+python3 --version
+Configure the devopsagent user to run Docker.
+
+sudo groupadd docker
+sudo usermod -aG docker $USER
+exit
+Restart the Linux VM from Azure portal to apply changes made in previous steps. Restarting the VM will log you out from the SSH log in. You will have to log back in using the same SSH command. Do note the new public IP, if it has been changed after the VM restart.
+
+Configure the Agent (VM) - Install Agent Services
+Go back to the DevOps portal, and open the newly created Agent pool to add a new agent.
+
+Adding a new agent to the agent pool
+Adding a new agent to the agent pool
+
+Copying the commands to download, create, and configure the Linux x64 agent
+Copying the commands to download, create, and configure the Linux x64 agent
+
+Copy the commands to download, create and configure the Linux x64 agent. The commands will be similar to the following:
+
+curl -O https://vstsagentpackage.azureedge.net/agent/2.202.1/vsts-agent-linux-x64-2.202.1.tar.gz
+mkdir myagent && cd myagent
+tar zxvf ../vsts-agent-linux-x64-2.202.1.tar.gz
+./config.sh
+The configuration will ask for the following prompts:
+
+Prompt	Response
+Accept the license agreement	Y
+Server URL	Provide your Azure DevOps organization URL
+For example, https://dev.azure.com/organization-name(opens in a new tab)
+or
+https://dev.azure.com/odluser193422(opens in a new tab)
+Authentication type	[Press enter]
+Personal access token	[Provide the PAT saved above]
+Agent pool (enter the value)	Choose the one created above,
+say myAgentPool
+Agent name	[Press enter]
+Work folder	[Press enter]
+Run the following commands to finish the set up.
+
+sudo ./svc.sh install
+sudo ./svc.sh start
+Prepare the Agent for running Flask application
+We have to install some additional packages to enable our agent build the Flask application code. These commands are specific to our sample Flask application, you can extend them per your application requirements:
+
+sudo apt-get update
+sudo apt update
+sudo apt install software-properties-common
+sudo add-apt-repository ppa:deadsnakes/ppa
+Check if the VM has Python installed already. Otherwise, use these commands to install Python
+
+sudo apt install python3.7
+sudo apt-get install python3.7-venv
+sudo apt-get install python3-pip
+python3.7 --version
+pip --version 
+Install tools for the Pipeline build steps.
+
+sudo apt-get install python3.7-distutils
+sudo apt-get -y install zip
+In addition, pylint is know to need an additional step, as mentioned in this stackoverflow thread(opens in a new tab):
+
+pip install pylint==2.13.7
+pip show --files pylint
+echo $PATH
+Update the Path for Pylint.
+
+export PATH=$HOME/.local/bin:$PATH
+echo $PATH
+which pylint
