@@ -107,52 +107,52 @@ stages:
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
 - stage: Build
-    jobs:
-    - job: Build
-      pool:
-          name: Azure Pipelines
-      steps:
-      - script: |
-          wget -q https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb
-          sudo dpkg -i packages-microsoft-prod.deb
-          sudo apt-get update
-          sudo apt-get install -y dotnet-sdk-6.0
-        displayName: 'Install .NET SDK 6.0'
-      - script: dotnet --version 
-        displayName: 'Verify the installation'
-      - script: |
-          cd ~/work/1/s/fakerestapi/FakeRESTApi.Web
-          dotnet build --configuration release
-          ls /bin/release/net6.0
-          echo "Build done"
-        displayName: 'Build .NET project'
-      - task: ArchiveFiles@2
-        displayName: Archive FakeRestAPI
-        inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi/FakeRESTApi.Web/bin/release/net6.0'
-          includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Build.BuildId)-fakerestapi.zip'
-      - task: PublishPipelineArtifact@1
-        displayName: Upload package
-        inputs:   
-          targetPath: $(Build.BuildId)-fakerestapi.zip
-          artifact: drop-fakerestapi
+  jobs:
+  - job: Build
+    pool:
+        name: Azure Pipelines
+    steps:
+    - script: |
+        wget -q https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb
+        sudo dpkg -i packages-microsoft-prod.deb
+        sudo apt-get update
+        sudo apt-get install -y dotnet-sdk-6.0
+      displayName: 'Install .NET SDK 6.0'
+    - script: dotnet --version 
+      displayName: 'Verify the installation'
+    - script: |
+        cd ~/work/1/s/fakerestapi/FakeRESTApi.Web
+        dotnet build --configuration release
+        ls /bin/release/net6.0
+        echo "Build done"
+      displayName: 'Build .NET project'
+    - task: ArchiveFiles@2
+      displayName: Archive FakeRestAPI
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi/FakeRESTApi.Web/bin/release/net6.0'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.BuildId)-fakerestapi.zip'
+    - task: PublishPipelineArtifact@1
+      displayName: Upload package
+      inputs:   
+        targetPath: $(Build.BuildId)-fakerestapi.zip
+        artifact: drop-fakerestapi
 
-      - task: ArchiveFiles@2
-        displayName: Archive Selenium
-        inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-          includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Build.BuildId)-selenium.zip'
-          replaceExistingArchive: true
-        
-      - task: PublishPipelineArtifact@1
-        displayName: Upload Selenium
-        inputs:
-         targetPath: $(Build.BuildId)-selenium.zip
-         artifact: drop-selenium
+    - task: ArchiveFiles@2
+      displayName: Archive Selenium
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.BuildId)-selenium.zip'
+        replaceExistingArchive: true
+      
+    - task: PublishPipelineArtifact@1
+      displayName: Upload Selenium
+      inputs:
+        targetPath: $(Build.BuildId)-selenium.zip
+        artifact: drop-selenium
 
 #--------------------------------------------#    
     # Postman - Install Newman    

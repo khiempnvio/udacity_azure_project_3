@@ -1,9 +1,12 @@
+Username	devopsagent
+Password	DevOpsAgent@123
+
 Configure the Agent (VM) - Install Docker
 Configure the newly created Linux VM as a self-hosted agent(opens in a new tab). The agent VM will perform the pipeline jobs, such as building your code residing in Github and deploying it to the Azure services. This step will let you authenticate the agent via a Personal Access Token (PAT) generated from your DevOps account. If everything goes well, you will see the agent "online" in your DevOps account, as shown in the snapshot below.
 
 Run the following commands from an Azure cloud shell or terminal or command prompt. Replace the IP address as applicable to you.
 
-ssh devopsagent@70.37.97.22
+ssh devopsagent@172.201.99.15
 Accept the default prompts and provide the username and password as you have set up in the last step above.
 
 After you SSH into the VM, install Docker(opens in a new tab) as:
@@ -30,9 +33,9 @@ Copying the commands to download, create, and configure the Linux x64 agent
 
 Copy the commands to download, create and configure the Linux x64 agent. The commands will be similar to the following:
 
-curl -O https://vstsagentpackage.azureedge.net/agent/2.202.1/vsts-agent-linux-x64-2.202.1.tar.gz
+curl -O https://vstsagentpackage.azureedge.net/agent/3.241.0/vsts-agent-linux-x64-3.241.0.tar.gz
 mkdir myagent && cd myagent
-tar zxvf ../vsts-agent-linux-x64-2.202.1.tar.gz
+tar zxvf ../vsts-agent-linux-x64-3.241.0.tar.gz
 ./config.sh
 The configuration will ask for the following prompts:
 
@@ -61,14 +64,14 @@ sudo apt install software-properties-common
 sudo add-apt-repository ppa:deadsnakes/ppa
 Check if the VM has Python installed already. Otherwise, use these commands to install Python
 
-sudo apt install python3.7
-sudo apt-get install python3.7-venv
+sudo apt install python3.9
+sudo apt-get install python3.9-venv
 sudo apt-get install python3-pip
-python3.7 --version
+python3.9 --version
 pip --version 
 Install tools for the Pipeline build steps.
 
-sudo apt-get install python3.7-distutils
+sudo apt-get install python3.9-distutils
 sudo apt-get -y install zip
 In addition, pylint is know to need an additional step, as mentioned in this stackoverflow thread(opens in a new tab):
 
