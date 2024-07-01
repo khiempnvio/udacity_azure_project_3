@@ -106,11 +106,9 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
-- stage: Build
+- stage: Build_And_Archive_FakeAPI
   jobs:
   - job: Build
-    pool:
-        name: Azure Pipelines
     steps:
     - script: |
         wget -q https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb
