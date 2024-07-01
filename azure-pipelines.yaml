@@ -151,7 +151,24 @@ stages:
       inputs:
         targetPath: $(Build.BuildId)-selenium.zip
         artifact: drop-selenium
-
+        
+- stage: DeployApp
+  displayName: Deploy App to Webapp Service
+  jobs:
+  - deployment: FakeRestAPI
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: $(azureServiceConnectionId)
+              appName: $(appName)
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+              deploymentMethod: auto 
 #--------------------------------------------#    
     # Postman - Install Newman    
     # - job: Postman_Install_Newman  
