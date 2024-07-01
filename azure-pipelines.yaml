@@ -248,12 +248,12 @@ stages:
         displayName: Install Node v16.X
         inputs:
           versionSpec: '16.x'
-      - bash: |
+      - script: |
           node -v
-          sudo npm install -g newman
+          npm install -g newman
           newman -v
         displayName: Install Newman CLI
-      - bash: |
+      - script: |
             newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
         displayName: Run Regression Test
       - task: CmdLine@2
