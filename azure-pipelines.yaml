@@ -171,7 +171,7 @@ stages:
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
               deploymentMethod: auto
 
-  - deployment: Deploy Driver
+  - deployment: DeployDriver
     displayName: Install chrome driver
     environment: $(environmentName)
     strategy:
