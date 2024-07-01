@@ -106,7 +106,9 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
-- stage: Build_And_Archive_FakeAPI
+
+- stage: Build
+  displayName: Build And Archive
   jobs:
   - job: Build
     steps:
@@ -168,7 +170,45 @@ stages:
               appName: $(appName)
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-              deploymentMethod: auto 
+              deploymentMethod: auto
+
+  - deployment: Deploy Driver
+    displayName: Install chrome driver
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
+
+                # download chrome driver
+                FILE=chromedriver_linux64.zip
+                if [ -f "$FILE" ]; then
+                  echo "$FILE exists."
+                else
+                  wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+                fi
+                # install chrome driver
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/bin/chromedriver
+                sudo chown root:root /usr/bin/chromedriver
+                sudo chmod +x /usr/bin/chromedriver
+                chromium-browser -version
+                chromedriver --version
+                # agent log analytics
+            env:  # To use secret variables in a script, we must explicitly map them as environment variables.
+              AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
+              AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
+            displayName: Configure VM  
 #--------------------------------------------#    
     # Postman - Install Newman    
     # - job: Postman_Install_Newman  
