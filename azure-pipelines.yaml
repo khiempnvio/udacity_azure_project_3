@@ -24,9 +24,9 @@ stages:
 #--------------------------------------------#  
 # BUILD STAGE
 #--------------------------------------------#    
-- stage: Build
+- stage: Infrastructure
   jobs:
-  - job: BuildInfrastructure
+  - job: Terraform_Deploy
     steps:
     - script: |
         sed -i 's/CLIENT_SECRET_KEY/$(client_secret)/g' $(System.DefaultWorkingDirectory)/terraform/environments/test/terraform.tfvars
@@ -106,86 +106,53 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
       env:
         ARM_ACCESS_KEY: $(storage_access_key)
-    - script: |
-        terraform output -json > output.json
-      displayName: 'Capture Terraform Outputs'
+- stage: Build
+    jobs:
+    - job: Build
+      pool:
+          name: Azure Pipelines
+      steps:
+      - script: |
+          wget -q https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb
+          sudo dpkg -i packages-microsoft-prod.deb
+          sudo apt-get update
+          sudo apt-get install -y dotnet-sdk-6.0
+        displayName: 'Install .NET SDK 6.0'
+      - script: dotnet --version 
+        displayName: 'Verify the installation'
+      - script: |
+          cd ~/work/1/s/fakerestapi/FakeRESTApi.Web
+          dotnet build --configuration release
+          ls /bin/release/net6.0
+          echo "Build done"
+        displayName: 'Build .NET project'
+      - task: ArchiveFiles@2
+        displayName: Archive FakeRestAPI
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi/FakeRESTApi.Web/bin/release/net6.0'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.BuildId)-fakerestapi.zip'
+      - task: PublishPipelineArtifact@1
+        displayName: Upload package
+        inputs:   
+          targetPath: $(Build.BuildId)-fakerestapi.zip
+          artifact: drop-fakerestapi
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/output.json'
-        artifact: 'terraformOutput'
-      displayName: 'Publish Terraform Output'
-
-    - download: current
-      artifact: terraformOutput
-
-    - script: |
-        export VM_USERNAME=$(jq -r '.admin_username.value' output.json)
-        export VM_PASSWORD=$(jq -r '.admin_password.value' output.json)
-        export VM_IP_ADDRESS=$(jq -r '.public_ip_address.value' output.json)
-        sshpass -p "$VM_PASSWORD" ssh -o StrictHostKeyChecking=no $VM_USERNAME@$VM_IP_ADDRESS "sudo apt-get update"
-      displayName: 'Log into VM and Run apt-get update'
-
-    - script: |
-        python -m venv appenv
-        source antenv/bin/activate
-        sudo apt-get update
-        sudo apt-get -y install make
-        sudo apt-get -y install zip
-        sudo apt-get -y install python3-pip
-
-        cd fakerestapi
-        make install
-      workingDirectory: $(projectRoot)
-      displayName: 'Step install dependences'
-
-    - script: |
-        make lint
-        export FLASK_APP=app.py
-      workingDirectory: $(projectRoot)
-      displayName: 'Step verify code and export FLASK_APP'
-
-    - task: ArchiveFiles@2
-      displayName: 'Step archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      displayName: 'Step upload package'
-      artifact: drop-fakerestapi
-
-    # - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-    #   displayName: Terraform destroy
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'destroy'
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-    #     environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-    #   env:
-    #     ARM_ACCESS_KEY: $(storage_access_key)
-
-- stage: Deploy
-  displayName: 'Deploy Web App'
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - deployment: DeploymentJob
-    environment: $(environmentName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App'
-            inputs:
-              azureSubscription: $(azureServiceConnectionId)
-              appName: $(appName)
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId).zip
-
+      - task: ArchiveFiles@2
+        displayName: Archive Selenium
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.BuildId)-selenium.zip'
+          replaceExistingArchive: true
+        
+      - task: PublishPipelineArtifact@1
+        displayName: Upload Selenium
+        inputs:
+         targetPath: $(Build.BuildId)-selenium.zip
+         artifact: drop-selenium
 
 #--------------------------------------------#    
     # Postman - Install Newman    
