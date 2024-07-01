@@ -213,6 +213,7 @@ stages:
   jobs:
   - deployment: Test_For_Webservice
     displayName: UI testing
+    environment: $(environmentName)
     strategy:
       runOnce:
         deploy:
