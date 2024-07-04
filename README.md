@@ -28,7 +28,7 @@ For this project, you'll develop and demonstrate your skills in using a variety 
 2. Azure Pipline run job Terraform 
     ![Define prefix variable](/Images/terraform_by_cicd.png)
 3. Azure Pipline run jobs successfully
-    ![Define prefix variable](/Images/az_run_jobs_successfully.png)
+    ![Define prefix variable](/Images/az_run_jobs_successfully_list.png)
 
 ### II. Automated TestingDev Environment - Terraform
 #### 1. Automated Testing Tasks
@@ -60,6 +60,10 @@ For this project, you'll develop and demonstrate your skills in using a variety 
     - Set Action Group
         ![Define prefix variable](/Images/action_group.png)
 #### 2. Configure Azure Log Analytics
-
+1. Metrics report and email alert rule
+    - Metrics alter rules
+        ![Define prefix variable](/Images/alert_404.png)
+    - Email alter rules
+        ![Define prefix variable](/Images/email_404.png)
 ## Resource Cleanup
 To prevent incurring Azure resource charges related to this project, it is advisable to remove the resource group housing the App Service and the App Service Plan.
