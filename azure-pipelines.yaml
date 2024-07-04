@@ -1,8 +1,4 @@
 name: Azure Pipelines
-
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 trigger:
 - main
 
@@ -10,11 +6,8 @@ pool: myAgentPool
 
 variables:
   python.version: '3.9'
-  # ToDo: Replace the service connection name as used in the DevOps project settings
   azureServiceConnectionId: 'myServiceConnection'
-  # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
-  # Environment name
   environmentName: 'env-vm-project3'
   appName: 'khiempn-udacity-2'
   vmUsername: 'devopsagent'

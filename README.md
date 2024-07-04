@@ -18,25 +18,47 @@ For this project, you'll develop and demonstrate your skills in using a variety 
 7. Installing [Selenium](https://pypi.org/project/selenium/)
 8. Installing [Terraform](https://www.terraform.io/downloads.html)
 
-## Demonstration
-
-https://youtu.be/QAz9EHo82Wo
-
 ## Instructions
 
 ### I. Environment Creation & Deployment
 #### 1. Dev Environment - Terraform
 1. Using Azure Pipeline to deploy Terrform Infrastructure as Code (IaC). Below are screenshots of the log output of Terraform when executed by the CI/CD pipeline.
-    ![Define prefix variable](/Images/terraform_by_cicd.png)
+    ![Define prefix variable](/Images/terraform_final.png)
+    ![Define prefix variable](/Images/terraform_strorage_container.png)
 2. Azure Pipline run job Terraform 
     ![Define prefix variable](/Images/terraform_by_cicd.png)
-### II. Automated TestingDev Environment - Terraform
-#### 1. Testing with JMeter
-#### 2. Testing with Postman
-#### 3. Testing with Selenium
+3. Azure Pipline run jobs successfully
+    ![Define prefix variable](/Images/az_run_jobs_successfully.png)
 
+### II. Automated TestingDev Environment - Terraform
+#### 1. Automated Testing Tasks
+1. Here, we provide a screenshot of the successful execution of the pipeline build results page (/_build/results?buildId={id}&view=results):
+    ![Define prefix variable](/Images/az_run_jobs_successfully.png)
+#### 2. Testing with JMeter
+1. Load Test suit in azure pipeline
+    ![Define prefix variable](/Images/jmester_step1.png)
+2. Test suit run completed
+    ![Define prefix variable](/Images/jmester_step2.png)
+
+#### 3. Testing with Postman
+1. Screenshot from postman result in azure pipelines
+    ![Define prefix variable](/Images/postman_result.png)
+#### 4. Testing with Selenium
+1. Screenshot from selenium result in azure pipelines
+    ![Define prefix variable](/Images/selenium_result.png)
+#### 5. Testing Test Result
+1. Screenshot from test result page
+    ![Define prefix variable](/Images/testing_test_results.png)
+#### 6. Testing Run Summary
+1. Screenshot of the Run Summary page, which contains four graphs
+    ![Define prefix variable](/Images/testing_summary.png)
 ### III. Monitoring & Observability
 #### 1. Configure Azure Monitor
+1. Here are screenshots of the graphs of the resource when the alert was triggered:
+    - Set Alert Rules
+        ![Define prefix variable](/Images/alert_rule.png)
+    - Set Action Group
+        ![Define prefix variable](/Images/action_group.png)
 #### 2. Configure Azure Log Analytics
 
 ## Resource Cleanup

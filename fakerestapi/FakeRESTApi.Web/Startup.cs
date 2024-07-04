@@ -52,10 +52,7 @@ namespace FakeRESTApi.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
