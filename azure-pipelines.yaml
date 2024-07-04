@@ -117,7 +117,7 @@ stages:
     #     dotnet build --configuration release
     #     ls /bin/release/net6.0
     #     echo "Build done"
-      displayName: 'Build .NET project'
+      # displayName: 'Build .NET project'
     - task: ArchiveFiles@2
       displayName: Archive FakeRestAPI
       inputs:
