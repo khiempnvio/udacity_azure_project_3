@@ -9,7 +9,7 @@ variables:
   azureServiceConnectionId: 'myServiceConnection'
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: 'env-vm-project3'
-  appName: 'khiempn-udacity-1'
+  appName: 'khiempn-udacity-2'
   vmUsername: 'devopsagent'
   vmPassword: 'DevOpsAgent@123'
   vmIpAddress: 'DevOpsAgent@123'
@@ -222,8 +222,8 @@ stages:
                   unzip -o $(Build.BuildId)-selenium.zip
                   sudo mkdir -p /var/log/selenium
                   sudo chmod 664 /var/log/selenium
-                  python3 uitest.py > ui-logs.log
-                  python3 uitest.py
+                  python3 login.py > ui-logs.log
+                  python3 login.py
                   sudo mv ui-logs.log /var/log/selenium
                   cd $(System.DefaultWorkingDirectory)
                   mkdir -p log/selenium
