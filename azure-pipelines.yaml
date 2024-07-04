@@ -16,7 +16,7 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
   environmentName: 'env-vm-project3'
-  appName: 'khiempn-udacity-1'
+  appName: 'khiempn-udacity-2'
   vmUsername: 'devopsagent'
   vmPassword: 'DevOpsAgent@123'
   vmIpAddress: 'DevOpsAgent@123'
