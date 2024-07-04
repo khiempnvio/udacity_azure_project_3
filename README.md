@@ -1,4 +1,3 @@
-
 # Azure Infrastructure Operations Project: Ensuring Quality Releases - Project Overview
 
 ## Introduction
