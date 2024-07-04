@@ -237,7 +237,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="hostname" elementType="Argument">
             <stringProp name="Argument.name">hostname</stringProp>
-            <stringProp name="Argument.value">khiempn-udacity-2.azurewebsites.net</stringProp>
+            <stringProp name="Argument.value">khiempn-udacity-2.azurewebsites.net.azurewebsites.net</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="protocol" elementType="Argument">
