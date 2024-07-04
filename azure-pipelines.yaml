@@ -121,7 +121,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: Archive FakeRestAPI
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi/bin'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi/FakeRESTApi.Web/bin/release/net6.0'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.BuildId)-fakerestapi.zip'
