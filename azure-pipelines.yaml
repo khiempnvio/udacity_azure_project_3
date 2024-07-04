@@ -112,16 +112,16 @@ stages:
       displayName: 'Install .NET SDK 6.0'
     - script: dotnet --version 
       displayName: 'Verify the installation'
-    - script: |
-        cd ~/work/1/s/fakerestapi/FakeRESTApi.Web
-        dotnet build --configuration release
-        ls /bin/release/net6.0
-        echo "Build done"
+    # - script: |
+    #     cd ~/work/1/s/fakerestapi/FakeRESTApi.Web
+    #     dotnet build --configuration release
+    #     ls /bin/release/net6.0
+    #     echo "Build done"
       displayName: 'Build .NET project'
     - task: ArchiveFiles@2
       displayName: Archive FakeRestAPI
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/fakerestapi/FakeRESTApi.Web/bin/release/net6.0'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi/bin'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.BuildId)-fakerestapi.zip'
