@@ -6,7 +6,9 @@ Configure the newly created Linux VM as a self-hosted agent(opens in a new tab).
 
 Run the following commands from an Azure cloud shell or terminal or command prompt. Replace the IP address as applicable to you.
 
-ssh devopsagent@172.201.99.15
+ssh devopsagent@172.190.89.16
+ssh devopsagent@172.172.233.215
+
 Accept the default prompts and provide the username and password as you have set up in the last step above.
 
 After you SSH into the VM, install Docker(opens in a new tab) as:
@@ -83,3 +85,4 @@ Update the Path for Pylint.
 export PATH=$HOME/.local/bin:$PATH
 echo $PATH
 which pylint
+

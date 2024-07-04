@@ -1,6 +1,6 @@
 # Azure subscription vars
-subscription_id = "d63f8116-7a20-4117-80f3-6b57296b37a5"
-client_id = "af7e8704-b4fb-4af0-9e65-d7063af0e76c"
+subscription_id = "850c12f5-152f-4692-a8e9-2a5d3b9f39db"
+client_id = "f7eacd50-0c87-4e0d-8b7f-bab5d463bd88"
 client_secret = "CLIENT_SECRET_KEY"
 tenant_id = "f958e84a-92b8-439f-a62d-4f45996b6d07"
 
