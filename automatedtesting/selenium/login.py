@@ -1,7 +1,6 @@
 # #!/usr/bin/env python
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.chrome.service import Service
 
 # Start the browser and login with standard_user
 def login (user, password):
@@ -14,8 +13,7 @@ def login (user, password):
     options.add_argument('--disable-gpu')
     options.add_argument('--remote-debugging-port=9222')  # Add remote debugging port
     # Set up the chromedriver path
-    service = Service('/usr/bin/chromedriver')
-    driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Chrome(options=options)
     # driver = webdriver.Chrome()
     print ('Browser started successfully. Navigating to the demo page to login.')
     driver.get('https://www.saucedemo.com/')
