@@ -173,33 +173,27 @@ stages:
       runOnce:
         deploy:
           steps:
+            - script: |
+                sudo apt-get update
+                sudo apt-get install -y chromium-browser
+                sudo apt-get install -y libnss3 libgconf-2-4
+              displayName: 'Install Chromium and Dependencies'
+            - script: |
+                mkdir -p /home/seleniumuser/.config
+                sudo chown -R $(whoami) /home/seleniumuser/.config
+              displayName: 'Set Permissions for Chromium'
+            - script: |
+                python -m venv venv
+                source venv/bin/activate
+                pip install selenium
+                python your_selenium_script.py
+              displayName: 'Run Selenium Tests'
             - task: Bash@3
               inputs:
                 targetType: inline
                 script: |
                   #! /bin/bash
-                  sudo apt-get upgrade -y
-                  sudo apt-get install python3-pip -y
-                  sudo apt-get install unzip -y
-                  sudo apt-get install -y chromium-browser
-                  pip3 install selenium
-
-                  # download chrome driver
-                  FILE=chromedriver_linux64.zip
-                  if [ -f "$FILE" ]; then
-                    echo "$FILE exists."
-                  else
-                    wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
-                  fi
-                  # install chrome driver
-                  unzip chromedriver_linux64.zip
-                  sudo mv chromedriver /usr/bin/chromedriver
-                  sudo chown root:root /usr/bin/chromedriver
-                  sudo chmod +x /usr/bin/chromedriver
-                  chromium-browser -version
-                  chromedriver --version
                   # agent log analytics
-
                   cd $(Pipeline.Workspace)/drop-selenium
                   unzip -o $(Build.BuildId)-selenium.zip
                   sudo mkdir -p /var/log/selenium
