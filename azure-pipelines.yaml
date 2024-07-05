@@ -188,9 +188,17 @@ stages:
             - script: |
                 google-chrome --version
                 sudo rm /usr/bin/chromedriver
+
+                CHROME_VERSION="126.0.6478.126"
+                wget -N https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip
+                unzip chromedriver_linux64.zip
+                sudo mv chromedriver /usr/local/bin/chromedriver
+                sudo chmod +x /usr/local/bin/chromedriver
+                rm chromedriver_linux64.zip
+
                 sudo mkdir -p /home/seleniumuser/.config
                 sudo chown -R $(whoami) /home/seleniumuser/.config
-              displayName: 'Set Permissions for Chromium'
+              displayName: 'Chromium'
             - script: |
                 python -m venv venv
                 source venv/bin/activate
