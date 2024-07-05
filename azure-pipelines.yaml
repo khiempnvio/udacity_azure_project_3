@@ -176,7 +176,7 @@ stages:
           steps:
             # - script: |
             #     sudo apt-get update
-            #     sudo apt-get install -y chromium-browser
+            #     
             #     sudo apt-get install -y libnss3 libgconf-2-4
 
             #     #sudo apt-get remove -y chromedriver  # Remove any existing version of chromedriver
@@ -187,7 +187,8 @@ stages:
             # displayName: 'Install Chromium and Compatible Chromedriver'
             - script: |
                 #sudo rm /usr/bin/chromedriver
-                sudo rm /usr/bin/chromium-browser
+                #sudo rm /usr/bin/chromium-browser
+                sudo apt-get install -y chromium-browser=114
                 
                 #LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
 
