@@ -44,7 +44,7 @@ For this project, you'll develop and demonstrate your skills in using a variety 
     ![Define prefix variable](/screenshots/postman_result.png)
 #### 4. Testing with Selenium
 1. Screenshot from selenium result in azure pipelines
-    ![Define prefix variable](/screenshots/selenium_result.png)
+    ![Define prefix variable](/screenshots/selenium_result_2.png)
 #### 5. Testing Test Result
 1. Screenshot from test result page
     ![Define prefix variable](/screenshots/testing_test_results.png)

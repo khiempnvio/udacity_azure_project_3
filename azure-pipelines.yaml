@@ -233,6 +233,9 @@ stages:
               inputs:
                 targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log'
                 artifactName: 'drop-selenium-logs'
+            env:  # To use secret variables in a script, we must explicitly map them as environment variables.
+              AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
+              AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
                 
   - job: Test_Post_man
     displayName: Postman Test
