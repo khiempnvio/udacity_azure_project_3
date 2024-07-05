@@ -3,7 +3,6 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 import datetime
 import logging
-from selenium.webdriver.chrome.service import Service
 
 logging.basicConfig(filename='ui-logs.log', level=logging.INFO, 
                     format='%(asctime)s %(levelname)s %(message)s')
@@ -20,7 +19,6 @@ def driver_config():
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    service = Service('/usr/local/bin/chromedriver')  # Ensure this path is correct
 
     return webdriver.Chrome(options=options)
 
