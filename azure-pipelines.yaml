@@ -9,7 +9,7 @@ variables:
   azureServiceConnectionId: 'myServiceConnection'
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: 'env-vm-project3'
-  appName: 'khiempn-udacity-2'
+  appName: 'khiempn-udacity-1'
   vmUsername: 'devopsagent'
   vmPassword: 'DevOpsAgent@123'
   vmIpAddress: 'DevOpsAgent@123'
