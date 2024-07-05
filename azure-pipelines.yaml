@@ -192,14 +192,18 @@ stages:
 
                 wget -N https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/local/bin/chromedriver
-                sudo chmod +x /usr/local/bin/chromedriver
+                sudo mv chromedriver /usr/bin/chromedriver
+                sudo chmod +x /usr/bin/chromedriver
                 rm chromedriver_linux64.zip
 
                 sudo mkdir -p /home/seleniumuser/.config
                 sudo chown -R $(whoami) /home/seleniumuser/.config
               displayName: 'Chromium'
             - script: |
+                sudo apt install python3.9
+                sudo apt-get install python3.9-venv
+                sudo apt-get install python3-pip
+
                 python -m venv venv
                 source venv/bin/activate
                 chmod +x requirements.txt
