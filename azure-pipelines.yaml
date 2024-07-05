@@ -235,6 +235,7 @@ stages:
             - script: |
                 ls
                 chmod +x upload-logs.ps1
+                cat upload-logs.ps1
               displayName: 'Ensure script is executable'
             - task: PowerShell@2
               inputs:
