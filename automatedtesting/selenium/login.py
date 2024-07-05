@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 import datetime
 import logging
+from selenium.webdriver.chrome.service import Service
 
 logging.basicConfig(filename='ui-logs.log', level=logging.INFO, 
                     format='%(asctime)s %(levelname)s %(message)s')
