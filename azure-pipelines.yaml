@@ -228,6 +228,7 @@ stages:
                   cd $(System.DefaultWorkingDirectory)
                   mkdir -p log/selenium
                   sudo cp /var/log/selenium/ui-logs.log log/selenium
+                  cat ui-logs.log
             - script: |
                 sudo apt-get update
                 sudo apt-get install -y powershell
