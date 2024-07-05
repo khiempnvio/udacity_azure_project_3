@@ -228,15 +228,12 @@ stages:
                   cd $(System.DefaultWorkingDirectory)
                   mkdir -p log/selenium
                   sudo cp /var/log/selenium/ui-logs.log log/selenium
-            - task: PublishPipelineArtifact@1
-              displayName: Publish selenium logs
+            - task: PowerShell@2
               inputs:
-                targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log'
-                artifactName: 'drop-selenium-logs'
-              env:  # To use secret variables in a script, we must explicitly map them as environment variables.
-                AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
-                AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
-                
+                targetType: 'filePath'
+                filePath: '$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log'
+                arguments: '-logAnalyticsWorkspaceId $(AZURE_LOG_ANALYTICS_ID) -logAnalyticsWorkspaceKey $(AZURE_LOG_ANALYTICS_PRIMARY_KEY) -logData "$(Build.BuildId),$(Build.BuildNumber),$(Build.DefinitionName),$(Build.QueuedBy),$(Build.QueuedById),$(Build.Reason),$(Build.SourceBranchName)"'
+              displayName: 'Publish selenium logs'
   - job: Test_Post_man
     displayName: Postman Test
     steps: 
