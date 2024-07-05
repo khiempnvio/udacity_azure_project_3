@@ -17,8 +17,8 @@ stages:
 #--------------------------------------------#  
 # BUILD STAGE
 #--------------------------------------------#    
-- stage: Infrastructure
-  jobs:
+# - stage: Infrastructure
+#   jobs:
 #   - job: Terraform_Deploy
 #     steps:
 #     - script: |
@@ -242,33 +242,32 @@ stages:
                 filePath: 'upload-logs.ps1'
                 arguments: '-logAnalyticsWorkspaceId $(AZURE_LOG_ANALYTICS_ID) -logAnalyticsWorkspaceKey $(AZURE_LOG_ANALYTICS_PRIMARY_KEY) -logFilePath "$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log"'
               displayName: 'Publish selenium logs'
-  - job: Test_Post_man
-    displayName: Postman Test
-    steps: 
-      - task: NodeTool@0
-        displayName: Install Node v16.X
-        inputs:
-          versionSpec: '16.x'
-      - script: |
-          node -v
-          npm install -g newman
-          newman -v
-        displayName: Install Newman CLI
-      - script: |
-            newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
-        displayName: Run Regression Test
-      - task: CmdLine@2
-        inputs:
-          script: 'ls'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-      - task: PublishTestResults@2
-        displayName: Publish report postman
-        condition: always()
-        inputs:
-          testResultsFormat: JUnit
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
-
-  - job: Test_Jmeter
+  # - job: Test_Post_man
+  #   displayName: Postman Test
+  #   steps: 
+  #     - task: NodeTool@0
+  #       displayName: Install Node v16.X
+  #       inputs:
+  #         versionSpec: '16.x'
+  #     - script: |
+  #         node -v
+  #         npm install -g newman
+  #         newman -v
+  #       displayName: Install Newman CLI
+  #     - script: |
+  #           newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
+  #       displayName: Run Regression Test
+  #     - task: CmdLine@2
+  #       inputs:
+  #         script: 'ls'
+  #         workingDirectory: '$(System.DefaultWorkingDirectory)'
+  #     - task: PublishTestResults@2
+  #       displayName: Publish report postman
+  #       condition: always()
+  #       inputs:
+  #         testResultsFormat: JUnit
+  #         testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+  # - job: Test_Jmeter
     displayName: Performance testing
     steps:
       - bash: |
