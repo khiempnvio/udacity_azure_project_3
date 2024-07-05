@@ -13,6 +13,7 @@ variables:
   vmUsername: 'devopsagent'
   vmPassword: 'DevOpsAgent@123'
   vmIpAddress: 'DevOpsAgent@123'
+  chromedriverVersion: '126.0.6478.126'  # Use the appropriate version for your Chrome
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
@@ -177,7 +178,13 @@ stages:
                 sudo apt-get update
                 sudo apt-get install -y chromium-browser
                 sudo apt-get install -y libnss3 libgconf-2-4
-              displayName: 'Install Chromium and Dependencies'
+                sudo apt-get remove -y chromedriver  # Remove any existing version of chromedriver
+                wget -N https://chromedriver.storage.googleapis.com/$chromedriverVersion/chromedriver_linux64.zip
+                unzip chromedriver_linux64.zip -d /usr/local/bin/
+                rm chromedriver_linux64.zip
+                sudo mv /usr/local/bin/chromedriver /usr/local/bin/chromedriver_$chromedriverVersion
+                sudo ln -s /usr/local/bin/chromedriver_$chromedriverVersion /usr/local/bin/chromedriver
+              displayName: 'Install Chromium and Compatible Chromedriver'
             - script: |
                 sudo mkdir -p /home/seleniumuser/.config
                 sudo chown -R $(whoami) /home/seleniumuser/.config
@@ -195,7 +202,7 @@ stages:
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium
                 python3 login.py > ui-logs.log
-                python3 login.py
+                #python3 login.py
                 sudo mv ui-logs.log /var/log/selenium
                 cd $(System.DefaultWorkingDirectory)
                 mkdir -p log/selenium
