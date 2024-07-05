@@ -222,9 +222,9 @@ stages:
                   unzip -o $(Build.BuildId)-selenium.zip
                   sudo mkdir -p /var/log/selenium
                   sudo chmod 664 /var/log/selenium
-                  python3 login.py > ui-logs.log
                   python3 login.py
                   sudo mv ui-logs.log /var/log/selenium
+                  ls
                   cd $(System.DefaultWorkingDirectory)
                   mkdir -p log/selenium
                   sudo cp /var/log/selenium/ui-logs.log log/selenium
