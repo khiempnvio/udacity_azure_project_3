@@ -233,6 +233,7 @@ stages:
                 targetType: 'filePath'
                 filePath: 'upload-logs.ps1'
                 arguments: '-logAnalyticsWorkspaceId $(logAnalyticsWorkspaceId) -logAnalyticsWorkspaceKey $(logAnalyticsWorkspaceKey) -logFilePath "$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log"'
+                pwsh: false  # Use Windows PowerShell instead of PowerShell Core
               displayName: 'Publish selenium logs'
   - job: Test_Post_man
     displayName: Postman Test
