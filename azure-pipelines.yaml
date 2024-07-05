@@ -187,14 +187,26 @@ stages:
             # displayName: 'Install Chromium and Compatible Chromedriver'
             - script: |
                 #sudo rm /usr/bin/chromedriver
-                sudo apt-get remove -y chromedriver
+                sudo apt-get update
+                sudo apt-get install -y chromium-browser
+                sudo apt-get install -y libnss3 libgconf-2-4
+
+                #CHROME_VERSION="126.0.6478.126"  # Replace with your Chrome version
                 LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
 
                 wget -N https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
-                sudo mv chromedriver /usr/bin/chromedriver
-                sudo chmod +x /usr/bin/chromedriver
+                sudo mv chromedriver /usr/local/bin/chromedriver
+                sudo chmod +x /usr/local/bin/chromedriver
                 rm chromedriver_linux64.zip
+
+                # LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+
+                # wget -N https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                # unzip chromedriver_linux64.zip
+                # sudo mv chromedriver /usr/bin/chromedriver
+                # sudo chmod +x /usr/bin/chromedriver
+                # rm chromedriver_linux64.zip
 
                 sudo mkdir -p /home/seleniumuser/.config
                 sudo chown -R $(whoami) /home/seleniumuser/.config
