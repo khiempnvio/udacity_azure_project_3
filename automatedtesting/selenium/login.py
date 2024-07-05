@@ -22,7 +22,7 @@ def driver_config():
     options.add_argument('--disable-dev-shm-usage')
     service = Service('/usr/local/bin/chromedriver')  # Ensure this path is correct
 
-    return webdriver.Chrome(service=service, options=options)
+    return webdriver.Chrome(options=options)
 
 def login(driver, user, password):
     driver.get(login_url)
