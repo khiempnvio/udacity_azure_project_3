@@ -7,7 +7,7 @@ provider "azurerm" {
 }
 terraform {
   backend "azurerm" {
-    storage_account_name = "tfstate5655496"
+    storage_account_name = "tfstate23626280"
     container_name       = "tfstate"
     key                  = "key1"
     #access_key           = ""
