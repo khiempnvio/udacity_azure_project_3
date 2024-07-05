@@ -16,7 +16,12 @@ def timestamp():
 def driver_config():
     logging.info ('Starting the browser...')
     options = ChromeOptions()
-    return webdriver.Chrome(options=options)
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    service = Service('/usr/local/bin/chromedriver')  # Ensure this path is correct
+
+    return webdriver.Chrome(service=service, options=options)
 
 def login(driver, user, password):
     driver.get(login_url)
@@ -45,6 +50,7 @@ def remove_items_from_card(driver):
     logging.info ('Test Remove Items from cart Success.')
 
 def run_test():
+    
     driver = driver_config()
     logging.info("Browser started!")
     logging.info("Begin UI Test")

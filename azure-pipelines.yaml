@@ -13,7 +13,7 @@ variables:
   vmUsername: 'devopsagent'
   vmPassword: 'DevOpsAgent@123'
   vmIpAddress: 'DevOpsAgent@123'
-  chromedriverVersion: '126.0.6478.126'  # Use the appropriate version for your Chrome
+  chromedriverVersion: '142.250.115.207'  # Use the appropriate version for your Chrome
 stages:
 #--------------------------------------------#  
 # BUILD STAGE
