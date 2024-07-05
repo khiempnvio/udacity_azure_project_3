@@ -200,7 +200,6 @@ stages:
                 cd $(System.DefaultWorkingDirectory)
                 mkdir -p log/selenium
                 sudo cp /var/log/selenium/ui-logs.log log/selenium
-                cat ui-logs.log
               displayName: 'Run Selenium Tests'
             - script: |
                 sudo apt-get update
