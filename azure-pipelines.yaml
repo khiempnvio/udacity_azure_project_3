@@ -240,7 +240,7 @@ stages:
               inputs:
                 targetType: 'filePath'
                 filePath: 'upload-logs.ps1'
-                arguments: '-logAnalyticsWorkspaceId $(logAnalyticsWorkspaceId) -logAnalyticsWorkspaceKey $(logAnalyticsWorkspaceKey) -logFilePath "$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log"'
+                arguments: '-logAnalyticsWorkspaceId $(AZURE_LOG_ANALYTICS_ID) -logAnalyticsWorkspaceKey $(AZURE_LOG_ANALYTICS_PRIMARY_KEY) -logFilePath "$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log"'
               displayName: 'Publish selenium logs'
   - job: Test_Post_man
     displayName: Postman Test
