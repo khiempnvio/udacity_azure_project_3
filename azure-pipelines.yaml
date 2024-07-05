@@ -186,11 +186,11 @@ stages:
             #     sudo ln -s $PWD/chromedriver_$LATEST /usr/local/bin/chromedriver_$LATEST
             # displayName: 'Install Chromium and Compatible Chromedriver'
             - script: |
-                google-chrome --version
-                sudo rm /usr/bin/chromedriver
+                #sudo rm /usr/bin/chromedriver
 
-                CHROME_VERSION="126.0.6478.126"
-                wget -N https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip
+                LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+
+                wget -N https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
                 unzip chromedriver_linux64.zip
                 sudo mv chromedriver /usr/local/bin/chromedriver
                 sudo chmod +x /usr/local/bin/chromedriver
