@@ -38,6 +38,8 @@ def run_test():
     driver = driver_config()
     print("Browser started!")
     print("Begin UI Test") 
+    print("Login website saucedemo") 
+    login(driver, 'standard_user', 'secret_sauce')
     print("--Begin Add items to cart")
     add_items_to_cart(driver, 3)
     print("--End Add items to cart")
