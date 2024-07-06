@@ -175,16 +175,7 @@ stages:
       runOnce:
         deploy:
           steps:
-            - script: |
-              wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
-              tar -xvzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
-              sudo mv geckodriver /usr/local/bin/
-            displayName: 'Install GeckoDriver'
 
-            - script: |
-              sudo apt-get update
-              sudo apt-get install -y firefox
-            displayName: 'Install Firefox'
             # - script: |
             #     sudo apt-get update
             #     
@@ -222,6 +213,16 @@ stages:
             #     sudo mkdir -p /home/seleniumuser/.config
             #     sudo chown -R $(whoami) /home/seleniumuser/.config
             #   displayName: 'Chromium'
+            - script: |
+                wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
+                tar -xvzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
+                sudo mv geckodriver /usr/local/bin/
+              displayName: 'Install GeckoDriver'
+
+            - script: |
+                sudo apt-get update
+                sudo apt-get install -y firefox
+              displayName: 'Install Firefox'
             - script: |
                 sudo apt install python3.9
                 sudo apt-get install python3.9-venv
