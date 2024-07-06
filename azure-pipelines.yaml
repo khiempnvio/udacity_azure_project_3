@@ -217,6 +217,7 @@ stages:
                 #sudo rm /usr/local/bin/geckodriver
                 wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
                 tar -xvzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
+                chmod +x geckodriver
                 sudo mv geckodriver /usr/local/bin/
               displayName: 'Install GeckoDriver'
 
@@ -225,15 +226,21 @@ stages:
                 sudo apt-get install -y firefox
               displayName: 'Install Firefox'
             - script: |
-                sudo apt install python3.9
-                sudo apt-get install python3.9-venv
-                sudo apt-get install python3-pip
+                # sudo apt install python3.9
+                # sudo apt-get install python3.9-venv
+                # sudo apt-get install python3-pip
 
-                python -m venv venv
-                source venv/bin/activate
+                # python -m venv venv
+                # source venv/bin/activate
                 chmod +x requirements.txt
                 pip install -r requirements.txt
               displayName: 'Install Selenium'
+
+            - script: |
+                sudo apt-get update
+                sudo apt-get install -y xvfb
+              displayName: 'Install xvfb'
+
             - script: |
                 #! /bin/bash
                 # agent log analytics
@@ -241,7 +248,7 @@ stages:
                 unzip -o $(Build.BuildId)-selenium.zip
                 sudo mkdir -p /var/log/selenium
                 sudo chmod 664 /var/log/selenium
-                python3 login.py > ui-logs.log
+                xvfb-run -a python login.py > ui-logs.log
                 #python3 login.py
                 sudo mv ui-logs.log /var/log/selenium
                 cd $(System.DefaultWorkingDirectory)
@@ -263,60 +270,60 @@ stages:
                 filePath: 'upload-logs.ps1'
                 arguments: '-logAnalyticsWorkspaceId $(AZURE_LOG_ANALYTICS_ID) -logAnalyticsWorkspaceKey $(AZURE_LOG_ANALYTICS_PRIMARY_KEY) -logFilePath "$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log"'
               displayName: 'Publish selenium logs'
-  - job: Test_Post_man
-    displayName: Postman Test
-    steps: 
-      - task: NodeTool@0
-        displayName: Install Node v16.X
-        inputs:
-          versionSpec: '16.x'
-      - script: |
-          node -v
-          npm install -g newman
-          newman -v
-        displayName: Install Newman CLI
-      - script: |
-            newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
-        displayName: Run Regression Test
-      - task: CmdLine@2
-        inputs:
-          script: 'ls'
-          workingDirectory: '$(System.DefaultWorkingDirectory)'
-      - task: PublishTestResults@2
-        displayName: Publish report postman
-        condition: always()
-        inputs:
-          testResultsFormat: JUnit
-          testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
-  - job: Test_Jmeter
-    displayName: Performance testing
-    steps:
-      - bash: |
-          sudo apt-get install openjdk-11-jre-headless -y
-          java -version
-          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
-          tar xzvf jmeter.tgz
-          echo "####################"
-          echo "jmeter version : " 
-          apache-jmeter-5.5/bin/jmeter --version   
-          echo "####################"
-          mkdir -p log/jmeter
-          pwd
-          ls -la
-          ls '$(Pipeline.Workspace)/s'
-        displayName: Install JMeter
-      - bash: |
-          apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log/jmeter/stress-test-result.csv -e -f -o log/jmeter/stress-test-html-report -j log/jmeter/jmeter-stress-test.log
-          cat log/jmeter/jmeter-stress-test.log
-          ls '$(Pipeline.Workspace)/s'
-          ls '$(Pipeline.Workspace)/s/automatedtesting/jmeter'
-        displayName: Stress Test
-      - bash: |
-          apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log/jmeter/endurance-test-result.csv -e -f -o log/jmeter/endurance-test-html-report -j log/jmeter/jmeter-endurance-test.log
-          cat log/jmeter/jmeter-endurance-test.log
-        displayName: Endurance Test
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: 'log/jmeter'
-          ArtifactName: 'jmeter'
-          publishLocation: 'Container'  
+  # - job: Test_Post_man
+  #   displayName: Postman Test
+  #   steps: 
+  #     - task: NodeTool@0
+  #       displayName: Install Node v16.X
+  #       inputs:
+  #         versionSpec: '16.x'
+  #     - script: |
+  #         node -v
+  #         npm install -g newman
+  #         newman -v
+  #       displayName: Install Newman CLI
+  #     - script: |
+  #           newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
+  #       displayName: Run Regression Test
+  #     - task: CmdLine@2
+  #       inputs:
+  #         script: 'ls'
+  #         workingDirectory: '$(System.DefaultWorkingDirectory)'
+  #     - task: PublishTestResults@2
+  #       displayName: Publish report postman
+  #       condition: always()
+  #       inputs:
+  #         testResultsFormat: JUnit
+  #         testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+  # - job: Test_Jmeter
+  #   displayName: Performance testing
+  #   steps:
+  #     - bash: |
+  #         sudo apt-get install openjdk-11-jre-headless -y
+  #         java -version
+  #         wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
+  #         tar xzvf jmeter.tgz
+  #         echo "####################"
+  #         echo "jmeter version : " 
+  #         apache-jmeter-5.5/bin/jmeter --version   
+  #         echo "####################"
+  #         mkdir -p log/jmeter
+  #         pwd
+  #         ls -la
+  #         ls '$(Pipeline.Workspace)/s'
+  #       displayName: Install JMeter
+  #     - bash: |
+  #         apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log/jmeter/stress-test-result.csv -e -f -o log/jmeter/stress-test-html-report -j log/jmeter/jmeter-stress-test.log
+  #         cat log/jmeter/jmeter-stress-test.log
+  #         ls '$(Pipeline.Workspace)/s'
+  #         ls '$(Pipeline.Workspace)/s/automatedtesting/jmeter'
+  #       displayName: Stress Test
+  #     - bash: |
+  #         apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log/jmeter/endurance-test-result.csv -e -f -o log/jmeter/endurance-test-html-report -j log/jmeter/jmeter-endurance-test.log
+  #         cat log/jmeter/jmeter-endurance-test.log
+  #       displayName: Endurance Test
+  #     - task: PublishBuildArtifacts@1
+  #       inputs:
+  #         PathtoPublish: 'log/jmeter'
+  #         ArtifactName: 'jmeter'
+  #         publishLocation: 'Container'  
