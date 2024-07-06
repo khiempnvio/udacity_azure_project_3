@@ -181,7 +181,7 @@ stages:
               sudo mv geckodriver /usr/local/bin/
             displayName: 'Install GeckoDriver'
 
-          - script: |
+            - script: |
               sudo apt-get update
               sudo apt-get install -y firefox
             displayName: 'Install Firefox'
