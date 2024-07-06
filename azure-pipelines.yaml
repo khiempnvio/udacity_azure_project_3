@@ -10,97 +10,93 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: 'env-vm-project3'
   appName: 'khiempn-udacity-1'
-  vmUsername: 'devopsagent'
-  vmPassword: 'DevOpsAgent@123'
-  vmIpAddress: 'DevOpsAgent@123'
-  chromedriverVersion: '142.250.115.207'  # Use the appropriate version for your Chrome
   GECKODRIVER_VERSION: 'v0.34.0'
 stages:
 # --------------------------------------------#  
 # BUILD STAGE
 # --------------------------------------------#    
-# - stage: Infrastructure
-#   jobs:
-#   - job: Terraform_Deploy
-#     steps:
-#     - script: |
-#         sed -i 's/CLIENT_SECRET_KEY/$(client_secret)/g' $(System.DefaultWorkingDirectory)/terraform/environments/test/terraform.tfvars
-#         cat $(System.DefaultWorkingDirectory)/terraform/environments/test/terraform.tfvars
-#       displayName: 'Update client key'
+- stage: Infrastructure
+  jobs:
+  - job: Terraform_Deploy
+    steps:
+    - script: |
+        sed -i 's/CLIENT_SECRET_KEY/$(client_secret)/g' $(System.DefaultWorkingDirectory)/terraform/environments/test/terraform.tfvars
+        cat $(System.DefaultWorkingDirectory)/terraform/environments/test/terraform.tfvars
+      displayName: 'Update client key'
 
-#     - script: |
-#         curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-#       displayName: 'Install Azure CLI'
+    - script: |
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      displayName: 'Install Azure CLI'
 
-#     - task: AzureCLI@2
-#       inputs:
-#         azureSubscription: '$(azureServiceConnectionId)'
-#         scriptType: 'bash'
-#         scriptLocation: 'inlineScript'
-#         inlineScript: |
-#           az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: '$(azureServiceConnectionId)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az login --service-principal -u $(client_id) -p $(client_secret) --tenant $(tenant_id)
 
-#     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
-#       displayName: 'Terrafom installation'
-#       inputs:
-#         terraformVersion: 'latest'
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: 'Terrafom installation'
+      inputs:
+        terraformVersion: 'latest'
   
-#     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-#       displayName: 'Terrafom init'
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'init'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-#         backendServiceArm: '$(azureServiceConnectionId)'
-#         backendAzureRmResourceGroupName: 'Azuredevops'
-#         backendAzureRmStorageAccountName: 'tfstate2042219671'
-#         backendAzureRmContainerName: 'tfstate'
-#         backendAzureRmKey: 'key1'
-#       env:
-#         ARM_ACCESS_KEY: $(storage_access_key)
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: 'Terrafom init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        backendServiceArm: '$(azureServiceConnectionId)'
+        backendAzureRmResourceGroupName: 'Azuredevops'
+        backendAzureRmStorageAccountName: 'tfstate2042219671'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: 'key1'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
 
-#     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-#       displayName: Terraform validate
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'validate'
-#       env:
-#         ARM_ACCESS_KEY: $(storage_access_key)
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: Terraform validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
 
-#     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-#       displayName: Terraform plan
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'plan'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-#         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-#       env:
-#         ARM_ACCESS_KEY: $(storage_access_key)
-#     # OPTIONAL - This step is needed only if your Terraform VM uses an SSH key pair for login and you want your pipeline agent to connect to it. 
-#     # Generate an SSH key pair in your local/AZ Cloud shell. Use the public key in the Terraform VM module. 
-#     # Install public key and private key file to the pipeline agent, using the task below. 
-#     # ToDo: Change the inputs value below
-#     # - task: InstallSSHKey@0
-#     #   inputs:
-#     #     knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN' # variable value
-#     #     sshPublicKey: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN'            # variable value
-#     #     sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: Terraform plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
+    # OPTIONAL - This step is needed only if your Terraform VM uses an SSH key pair for login and you want your pipeline agent to connect to it. 
+    # Generate an SSH key pair in your local/AZ Cloud shell. Use the public key in the Terraform VM module. 
+    # Install public key and private key file to the pipeline agent, using the task below. 
+    # ToDo: Change the inputs value below
+    # - task: InstallSSHKey@0
+    #   inputs:
+    #     knownHostsEntry: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN' # variable value
+    #     sshPublicKey: 'AAAAB3NzaC1yc2EAAAADAQABAAABgQDkvLEVD436vyghNnQEYz/CPddchLmY+iUyJz/YhpXCpC93Um9OTZ4Z7AF9PYy5Nrzit0jSu0bc5hlhIYLSSTgxOntctBJo23IWwWut8q/NFbjAaL+5HrfcNIXLt4nK/wPkakzT68/vg/97eWI/H6ghFxFc3cW3pSfTGILsZKryR0QXPv6okVQAOZfJWhnx6QNv82B5TpPW75sxK304Q6h23YJXhH+gd+ZKSVhaKU/cc/SfRJ2vrneqSkM/IjZGiu7+Myvil1tlTVAtoso1vMEOpt/iz6x9ni8GZ2Iw2VUNbuu+bY/aI//7rWC6/Z1ZZpv6E3cWm+uSLuSSORuVqr9NcvyT346GKONNWWnv0octTxRy5/D/1U+xgng1btn7Hp7zwri+FKd5SV4DdR+J6BHJZY1JgPh5PRsDUCsRglsYyeypMJRsHcx0ZCl+0DC7T1KZV8XK5XTUd8VTgB4NJopcYIGIhqfIlxjVWDrZECwE7thnozEAyigQMJoNSe6rtRU= KHIEM@KHIEMPN'            # variable value
+    #     sshKeySecureFile: 'id_rsa' # Use secure file feature in the pipeline library UI to save the "id_rsa" file, as mentioned here: https://learn.microsoft.com/en-us/azure/devops/pipelines/library/secure-files?view=azure-devops#add-a-secure-file
     
-#     # - task: DownloadSecureFile@1
-#     #  name: udacity_public_key
-#     #  displayName: 
-#     #  inputs:
-#     #   secureFile: 
+    # - task: DownloadSecureFile@1
+    #  name: udacity_public_key
+    #  displayName: 
+    #  inputs:
+    #   secureFile: 
     
-#     - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
-#       displayName: Terraform apply
-#       inputs:
-#         provider: 'azurerm'
-#         command: 'apply'
-#         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
-#         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
-#       env:
-#         ARM_ACCESS_KEY: $(storage_access_key)
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV3@3
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
+        environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+      env:
+        ARM_ACCESS_KEY: $(storage_access_key)
 
 - stage: Build
   jobs:
@@ -148,23 +144,23 @@ stages:
         targetPath: $(Build.BuildId)-selenium.zip
         artifact: drop-selenium
         
-# - stage: DeployApp
-#   displayName: Deploy App to Webapp Service
-#   jobs:
-#   - deployment: FakeRestAPI
-#     environment: $(environmentName)
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebApp@1
-#             displayName: 'Deploy Azure Web App'
-#             inputs:
-#               azureSubscription: $(azureServiceConnectionId)
-#               appName: $(appName)
-#               appType: webApp
-#               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-#               deploymentMethod: auto
+- stage: DeployApp
+  displayName: Deploy App to Webapp Service
+  jobs:
+  - deployment: FakeRestAPI
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: $(azureServiceConnectionId)
+              appName: $(appName)
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+              deploymentMethod: auto
             
 - stage: Testing
   jobs:
@@ -175,44 +171,6 @@ stages:
       runOnce:
         deploy:
           steps:
-
-            # - script: |
-            #     sudo apt-get update
-            #     
-            #     sudo apt-get install -y libnss3 libgconf-2-4
-
-            #     #sudo apt-get remove -y chromedriver  # Remove any existing version of chromedriver
-            #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-            #     wget -N https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-            #     unzip chromedriver_linux64.zip
-            #     sudo ln -s $PWD/chromedriver_$LATEST /usr/local/bin/chromedriver_$LATEST
-            # displayName: 'Install Chromium and Compatible Chromedriver'
-            # - script: |
-            #     #sudo rm /usr/bin/chromedriver
-            #     sudo apt-get update
-            #     sudo apt-get install -y chromium-browser
-            #     sudo apt-get install -y libnss3 libgconf-2-4
-
-            #     #CHROME_VERSION="126.0.6478.126"  # Replace with your Chrome version
-            #     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-
-            #     wget -N https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-            #     unzip chromedriver_linux64.zip
-            #     sudo mv chromedriver /usr/local/bin/chromedriver
-            #     sudo chmod +x /usr/local/bin/chromedriver
-            #     rm chromedriver_linux64.zip
-
-            #     # LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-
-            #     # wget -N https://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-            #     # unzip chromedriver_linux64.zip
-            #     # sudo mv chromedriver /usr/bin/chromedriver
-            #     # sudo chmod +x /usr/bin/chromedriver
-            #     # rm chromedriver_linux64.zip
-
-            #     sudo mkdir -p /home/seleniumuser/.config
-            #     sudo chown -R $(whoami) /home/seleniumuser/.config
-            #   displayName: 'Chromium'
             - script: |
                 #sudo rm /usr/local/bin/geckodriver
                 wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
@@ -270,60 +228,60 @@ stages:
                 filePath: 'upload-logs.ps1'
                 arguments: '-logAnalyticsWorkspaceId $(AZURE_LOG_ANALYTICS_ID) -logAnalyticsWorkspaceKey $(AZURE_LOG_ANALYTICS_PRIMARY_KEY) -logFilePath "$(System.DefaultWorkingDirectory)/log/selenium/ui-logs.log"'
               displayName: 'Publish selenium logs'
-  # - job: Test_Post_man
-  #   displayName: Postman Test
-  #   steps: 
-  #     - task: NodeTool@0
-  #       displayName: Install Node v16.X
-  #       inputs:
-  #         versionSpec: '16.x'
-  #     - script: |
-  #         node -v
-  #         npm install -g newman
-  #         newman -v
-  #       displayName: Install Newman CLI
-  #     - script: |
-  #           newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
-  #       displayName: Run Regression Test
-  #     - task: CmdLine@2
-  #       inputs:
-  #         script: 'ls'
-  #         workingDirectory: '$(System.DefaultWorkingDirectory)'
-  #     - task: PublishTestResults@2
-  #       displayName: Publish report postman
-  #       condition: always()
-  #       inputs:
-  #         testResultsFormat: JUnit
-  #         testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
-  # - job: Test_Jmeter
-  #   displayName: Performance testing
-  #   steps:
-  #     - bash: |
-  #         sudo apt-get install openjdk-11-jre-headless -y
-  #         java -version
-  #         wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
-  #         tar xzvf jmeter.tgz
-  #         echo "####################"
-  #         echo "jmeter version : " 
-  #         apache-jmeter-5.5/bin/jmeter --version   
-  #         echo "####################"
-  #         mkdir -p log/jmeter
-  #         pwd
-  #         ls -la
-  #         ls '$(Pipeline.Workspace)/s'
-  #       displayName: Install JMeter
-  #     - bash: |
-  #         apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log/jmeter/stress-test-result.csv -e -f -o log/jmeter/stress-test-html-report -j log/jmeter/jmeter-stress-test.log
-  #         cat log/jmeter/jmeter-stress-test.log
-  #         ls '$(Pipeline.Workspace)/s'
-  #         ls '$(Pipeline.Workspace)/s/automatedtesting/jmeter'
-  #       displayName: Stress Test
-  #     - bash: |
-  #         apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log/jmeter/endurance-test-result.csv -e -f -o log/jmeter/endurance-test-html-report -j log/jmeter/jmeter-endurance-test.log
-  #         cat log/jmeter/jmeter-endurance-test.log
-  #       displayName: Endurance Test
-  #     - task: PublishBuildArtifacts@1
-  #       inputs:
-  #         PathtoPublish: 'log/jmeter'
-  #         ArtifactName: 'jmeter'
-  #         publishLocation: 'Container'  
+  - job: Test_Post_man
+    displayName: Postman Test
+    steps: 
+      - task: NodeTool@0
+        displayName: Install Node v16.X
+        inputs:
+          versionSpec: '16.x'
+      - script: |
+          node -v
+          npm install -g newman
+          newman -v
+        displayName: Install Newman CLI
+      - script: |
+            newman run automatedtesting/postman/StarterAPIs.json --reporters cli,junit --reporter-junit-export Results/RegressionTests.xml --suppress-exit-code
+        displayName: Run Regression Test
+      - task: CmdLine@2
+        inputs:
+          script: 'ls'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+      - task: PublishTestResults@2
+        displayName: Publish report postman
+        condition: always()
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: '$(System.DefaultWorkingDirectory)/Results/*.xml'
+  - job: Test_Jmeter
+    displayName: Performance testing
+    steps:
+      - bash: |
+          sudo apt-get install openjdk-11-jre-headless -y
+          java -version
+          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.tgz -O jmeter.tgz
+          tar xzvf jmeter.tgz
+          echo "####################"
+          echo "jmeter version : " 
+          apache-jmeter-5.5/bin/jmeter --version   
+          echo "####################"
+          mkdir -p log/jmeter
+          pwd
+          ls -la
+          ls '$(Pipeline.Workspace)/s'
+        displayName: Install JMeter
+      - bash: |
+          apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx -l log/jmeter/stress-test-result.csv -e -f -o log/jmeter/stress-test-html-report -j log/jmeter/jmeter-stress-test.log
+          cat log/jmeter/jmeter-stress-test.log
+          ls '$(Pipeline.Workspace)/s'
+          ls '$(Pipeline.Workspace)/s/automatedtesting/jmeter'
+        displayName: Stress Test
+      - bash: |
+          apache-jmeter-5.5/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx -l log/jmeter/endurance-test-result.csv -e -f -o log/jmeter/endurance-test-html-report -j log/jmeter/jmeter-endurance-test.log
+          cat log/jmeter/jmeter-endurance-test.log
+        displayName: Endurance Test
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: 'log/jmeter'
+          ArtifactName: 'jmeter'
+          publishLocation: 'Container'  
