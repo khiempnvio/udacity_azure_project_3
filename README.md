@@ -64,7 +64,7 @@ For this project, you'll develop and demonstrate your skills in using a variety 
         ![Define prefix variable](/screenshots/alert_404.png)
     - Email alter rules
         ![Define prefix variable](/screenshots/email_404.png)
-    - Email alter rules
+    - Log analytics
         ![Define prefix variable](/screenshots/log_analytics.png)
 ## Resource Cleanup
 To prevent incurring Azure resource charges related to this project, it is advisable to remove the resource group housing the App Service and the App Service Plan.
