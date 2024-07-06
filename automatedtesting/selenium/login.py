@@ -14,7 +14,8 @@ def timestamp():
 
 def driver_config():
     logging.info ('Starting the browser...')
-    return webdriver.Firefox()
+    gecko_path = '/usr/local/bin/geckodriver'
+    return webdriver.Firefox(executable_path=gecko_path)
 
 def login(driver, user, password):
     driver.get(login_url)

@@ -214,7 +214,7 @@ stages:
             #     sudo chown -R $(whoami) /home/seleniumuser/.config
             #   displayName: 'Chromium'
             - script: |
-                sudo rm /usr/local/bin/geckodriver
+                #sudo rm /usr/local/bin/geckodriver
                 wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
                 tar -xvzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
                 sudo mv geckodriver /usr/local/bin/
