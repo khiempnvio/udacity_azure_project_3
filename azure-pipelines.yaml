@@ -14,7 +14,7 @@ variables:
   vmPassword: 'DevOpsAgent@123'
   vmIpAddress: 'DevOpsAgent@123'
   chromedriverVersion: '142.250.115.207'  # Use the appropriate version for your Chrome
-  GECKODRIVER_VERSION: 'v0.31.0'
+  GECKODRIVER_VERSION: 'v0.34.0'
 stages:
 # --------------------------------------------#  
 # BUILD STAGE
