@@ -1,10 +1,7 @@
 from selenium import webdriver
 
-# Set the path to the GeckoDriver executable
-gecko_path = '/path/to/geckodriver'
-
 # Create a new instance of the Firefox driver
-driver = webdriver.Firefox(executable_path=gecko_path)
+driver = webdriver.Firefox()
 
 # Open a website
 driver.get('http://www.google.com')

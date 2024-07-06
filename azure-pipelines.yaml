@@ -14,6 +14,7 @@ variables:
   vmPassword: 'DevOpsAgent@123'
   vmIpAddress: 'DevOpsAgent@123'
   chromedriverVersion: '142.250.115.207'  # Use the appropriate version for your Chrome
+  GECKODRIVER_VERSION: 'v0.31.0'
 stages:
 # --------------------------------------------#  
 # BUILD STAGE
@@ -174,6 +175,16 @@ stages:
       runOnce:
         deploy:
           steps:
+            - script: |
+              wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
+              tar -xvzf geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz
+              sudo mv geckodriver /usr/local/bin/
+            displayName: 'Install GeckoDriver'
+
+          - script: |
+              sudo apt-get update
+              sudo apt-get install -y firefox
+            displayName: 'Install Firefox'
             # - script: |
             #     sudo apt-get update
             #     
